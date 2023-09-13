@@ -1,0 +1,112 @@
+using Godot;
+using System;
+
+public partial class CameraController : Node3D
+{
+    [Export]
+    public int Sensitivity = 3;
+    [Export]
+    public float TopCameraBoundry = -0.8f;
+    [Export]
+    public float BottomCameraBoundry = 0f;
+
+    private float _positionFromPlayerX = 0;
+    private float _positionFromPlayerY = 2f;
+    private float _positionFromPlayerZ = 0;
+
+    private float _maxZoom = 5.6f;
+    private float _minZoom = 1f;
+    private float _zoomStep = 0.2f;
+    private float _zoomSpeed = 0.8f;
+
+    private bool _isMouseHidden = false;
+
+    private SpringArm3D _springArm;
+    private CharacterBody3D _character;
+    private Camera3D _camera;
+
+    //private Node3D _playerLook;
+
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready() {
+
+        _springArm = GetNode<SpringArm3D>("SpringArm3D");
+        _character = GetTree().GetNodesInGroup("Player")[0] as CharacterBody3D;
+        _camera = GetNode<Camera3D>("SpringArm3D/Camera3D");
+
+    }
+
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _Process(double delta) {
+
+        GlobalPosition = _character.Position + CameraStandardPos(); // Set camera controller pos following character
+        _camera.LookAt(GetLookAt(_character)); //Set Look At for Camera3D based on Node 3D with the name "LookAt"
+        ActiveCameraCheck(); // Hides/Shows mouse
+
+
+        //Debug Zone
+        //GD.Print(_camera.Position);
+        //GD.Print(_playerLook.GlobalPosition);
+    }
+
+    public override void _Input(InputEvent @event) {
+        base._Input(@event);
+
+        RotateCamera(@event);
+        HanldeCameraZoom(@event);
+
+    }
+
+
+    private void RotateCamera(InputEvent @event) {
+        if (@event is InputEventMouseMotion && _isMouseHidden) {
+            //Camera rotating
+            InputEventMouseMotion motion = (InputEventMouseMotion)@event;
+            Rotation = new Vector3(Math.Clamp(Rotation.X - motion.Relative.Y / 1000 * Sensitivity,
+                TopCameraBoundry, BottomCameraBoundry),
+                Rotation.Y - motion.Relative.X / 1000 * Sensitivity, 0);
+        }
+
+    }
+
+    //Method for Hiding mouse when Right Click is pressed
+    private void ActiveCameraCheck() {
+        if (Input.IsActionPressed("RightClick")) {
+            //Hide Mouse
+            _isMouseHidden = true;
+            Input.MouseMode = Input.MouseModeEnum.Captured;
+        }
+        else {
+            //Show mouse
+            _isMouseHidden = false;
+            Input.MouseMode = Input.MouseModeEnum.Visible;
+        }
+    }
+
+    //Get "Standard" camera positon based on variables
+    private Vector3 CameraStandardPos() {
+        return new Vector3(_positionFromPlayerX, _positionFromPlayerY, _positionFromPlayerZ);
+    }
+
+    private Vector3 GetLookAt(CharacterBody3D character) {
+        return character.GetNode<Node3D>("LookAt").GlobalPosition;
+    }
+
+    
+    private void HanldeCameraZoom(InputEvent @event) {
+        
+        if (@event is InputEventMouseButton mouseEvent){
+            switch (mouseEvent.ButtonIndex) {
+                case MouseButton.WheelUp:
+                    _springArm.SpringLength = Mathf.Clamp(_springArm.SpringLength + _zoomStep,_minZoom,_maxZoom);
+                    break;
+
+                case MouseButton.WheelDown:
+                    _springArm.SpringLength = Mathf.Clamp(_springArm.SpringLength - _zoomStep, _minZoom, _maxZoom);
+                    break;
+            }
+        }
+    }
+
+
+}

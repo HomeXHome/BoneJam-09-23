@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://bue1li662vbqh"]
+
+[ext_resource type="Script" path="res://scripts/controllers/CameraController.cs" id="1_qfyaf"]
+[ext_resource type="Script" path="res://scripts/controllers/PlayerLookController.cs" id="2_bdtm3"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_7twmg"]
+
+[node name="CameraController" type="Node3D" groups=["CameraController"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+script = ExtResource("1_qfyaf")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.98834, 0.152261, 0, -0.152261, 0.98834, 0, 0, 0)
+spring_length = 5.0
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D" groups=["Camera"]]
+transform = Transform3D(1, 0, 0, 0, 0.922619, 0.385713, 0, -0.385713, 0.922619, 0, 2.8, 3.8)
+
+[node name="PlayerLook" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.34595, 3.32936)
+script = ExtResource("2_bdtm3")
+
+[node name="LookTarget" type="MeshInstance3D" parent="PlayerLook" groups=["LookTarget"]]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, -3.33054, -10.8121)
+visible = false
+mesh = SubResource("SphereMesh_7twmg")

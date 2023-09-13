@@ -12,13 +12,12 @@ public partial class CharacterController : CharacterBody3D
     public float TurnSpeed = 0.1f;
 
     private Node3D _playerLook;
-    private Vector3 _lastLookAtDirection = new Vector3();
 
 
     public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
     public override void _Ready() {
-        _playerLook = GetTree().GetNodesInGroup("LookTarget")[0] as Node3D;
+        _playerLook = GetNode<Node3D>("../CameraController/PlayerLook/LookTarget");
     }
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -41,7 +40,7 @@ public partial class CharacterController : CharacterBody3D
         Vector2 inputDir = Input.GetVector("Left", "Right", "Forward", "Back");
         Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
         if (direction != Vector3.Zero) {
-            HandleLooking();
+            HadleLooking();
             velocity.X = direction.X * Speed;
             velocity.Z = direction.Z * Speed;
         }
@@ -54,12 +53,8 @@ public partial class CharacterController : CharacterBody3D
         MoveAndSlide();
     }
 
-    private void HandleLooking() {
-        Vector3 lookAt = _playerLook.GlobalPosition;
-        lookAt = new Vector3(lookAt.X, GlobalPosition.Y, lookAt.Z);
-        Vector3 lerpDirection = LerpHelper.LerpVector3(_lastLookAtDirection,lookAt,TurnSpeed);
-        LookAt(lerpDirection);
-        _lastLookAtDirection = lerpDirection;
+    private void HadleLooking() {
+        LookAt(new Vector3(_playerLook.GlobalPosition.X, GlobalPosition.Y, _playerLook.GlobalPosition.Z));
     }
 
 }

@@ -14,8 +14,8 @@ public partial class CameraController : Node3D
     private float _positionFromPlayerY = 2f;
     private float _positionFromPlayerZ = 0;
 
-    private float _maxZoom = 5.6f;
-    private float _minZoom = 1f;
+    private float _maxZoom = 8f;
+    private float _minZoom = 1.6f;
     private float _zoomStep = 0.2f;
     private float _zoomSpeed = 0.8f;
 
@@ -24,6 +24,7 @@ public partial class CameraController : Node3D
     private SpringArm3D _springArm;
     private CharacterBody3D _character;
     private Camera3D _camera;
+    private Node3D _lookAt;
 
     //private Node3D _playerLook;
 
@@ -33,14 +34,14 @@ public partial class CameraController : Node3D
         _springArm = GetNode<SpringArm3D>("SpringArm3D");
         _character = GetTree().GetNodesInGroup("Player")[0] as CharacterBody3D;
         _camera = GetNode<Camera3D>("SpringArm3D/Camera3D");
-
+        _lookAt = GetTree().GetNodesInGroup("LookAt")[0] as Node3D;
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta) {
 
         GlobalPosition = _character.Position + CameraStandardPos(); // Set camera controller pos following character
-        _camera.LookAt(GetLookAt(_character)); //Set Look At for Camera3D based on Node 3D with the name "LookAt"
+        _camera.LookAt(GetLookAt(_lookAt)); //Set Look At for Camera3D based on Node 3D with the name "LookAt"
         ActiveCameraCheck(); // Hides/Shows mouse
 
 
@@ -88,8 +89,8 @@ public partial class CameraController : Node3D
         return new Vector3(_positionFromPlayerX, _positionFromPlayerY, _positionFromPlayerZ);
     }
 
-    private Vector3 GetLookAt(CharacterBody3D character) {
-        return character.GetNode<Node3D>("LookAt").GlobalPosition;
+    private Vector3 GetLookAt(Node3D character) {
+        return character.GlobalPosition;
     }
 
     

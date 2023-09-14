@@ -5,6 +5,7 @@ public partial class DebugPanel : ItemList
 {
 	public Label PositionLabel;
     public Label TargetLabel;
+    public Label HealthLabel;
 
 
     private CharacterController _characterController;
@@ -17,10 +18,13 @@ public partial class DebugPanel : ItemList
 	{
         PositionLabel = GetNode("Position") as Label;
         TargetLabel = GetNode("Target") as Label;
+        HealthLabel = GetNode("TargetHealth") as Label;
+
 
         var _characterController = GetTree().GetNodesInGroup("Player")[0] as CharacterController;
         _characterController.OnPositionChanged += UpdatePositionLabel;
 		UpdateTargetLabel("No target");
+        UpdateTargetHealthLabel(0,0);
     }
     
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -35,4 +39,8 @@ public partial class DebugPanel : ItemList
 	public void UpdateTargetLabel(string name) {
 		TargetLabel.Text = String.Join(' ', "Target: ", name);
 	}
+    public void UpdateTargetHealthLabel(int actualHealth, int allHealth) {
+        HealthLabel.Text = String.Join('/',actualHealth.ToString(),allHealth.ToString());
+    }
+
 }

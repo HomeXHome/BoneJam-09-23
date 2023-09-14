@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://nbyklge62rog"]
+[gd_scene load_steps=12 format=3 uid="uid://nbyklge62rog"]
 
 [ext_resource type="PackedScene" uid="uid://cvv55cr5joxbo" path="res://scenes/player/player_v0.1.tscn" id="1_f5ul6"]
 [ext_resource type="Texture2D" uid="uid://vq4h8xy32n7a" path="res://textures/kenney's_prototype_textures/texture_01.png" id="1_iumi6"]
 [ext_resource type="PackedScene" uid="uid://bue1li662vbqh" path="res://scenes/player/camera_controller.tscn" id="2_cyej6"]
 [ext_resource type="Script" path="res://scripts/controllers/ClickableObjectController.cs" id="4_i2mw3"]
+[ext_resource type="Script" path="res://scripts/npc/Enemy.cs" id="4_m7ont"]
 
 [sub_resource type="Environment" id="Environment_vn6co"]
 
@@ -72,22 +73,10 @@ material_override = SubResource("StandardMaterial3D_uhgdk")
 use_collision = true
 mesh = SubResource("BoxMesh_la0xa")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 1, 0)
-script = ExtResource("4_i2mw3")
-ObjectName = "Box"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.0227985, -0.0072403, -0.0112612)
-shape = SubResource("BoxShape3D_kxk2t")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
-mesh = SubResource("BoxMesh_n76bj")
-
 [node name="StaticBody3D2" type="StaticBody3D" parent="."]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -17, 1, 15.2136)
 script = ExtResource("4_i2mw3")
-ObjectName = "Cooler Box"
+ObjectName = "Cool Box"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.0227985, -0.0072403, -0.0112612)
@@ -96,10 +85,12 @@ shape = SubResource("BoxShape3D_kxk2t")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
 mesh = SubResource("BoxMesh_n76bj")
 
-[connection signal="ClickedName" from="StaticBody3D" to="Player/CameraController/DebugUI/CanvasGroup/ItemList" method="UpdateTargetLabel"]
-[connection signal="ClickedTarget" from="StaticBody3D" to="Player/CharacterBody3D" method="OnTargetClicked"]
+[node name="EnemyController" type="Node" parent="StaticBody3D2"]
+script = ExtResource("4_m7ont")
+
 [connection signal="ClickedName" from="StaticBody3D2" to="Player/CameraController/DebugUI/CanvasGroup/ItemList" method="UpdateTargetLabel"]
 [connection signal="ClickedTarget" from="StaticBody3D2" to="Player/CharacterBody3D" method="OnTargetClicked"]
+[connection signal="HeathChange" from="StaticBody3D2/EnemyController" to="Player/CameraController/DebugUI/CanvasGroup/ItemList" method="UpdateTargetHealthLabel"]
 
 [editable path="Player"]
 [editable path="Player/CameraController"]

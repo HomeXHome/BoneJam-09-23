@@ -89,7 +89,7 @@ mesh = SubResource("BoxMesh_n76bj")
 script = ExtResource("4_m7ont")
 
 [connection signal="ClickedName" from="StaticBody3D2" to="Player/CameraController/DebugUI/CanvasGroup/ItemList" method="UpdateTargetLabel"]
-[connection signal="ClickedTarget" from="StaticBody3D2" to="Player/CharacterBody3D" method="OnTargetClicked"]
+[connection signal="ClickedTarget" from="StaticBody3D2" to="Player/CameraController/DebugUI/CanvasGroup/ItemList" method="UpdatePositionLabel"]
 [connection signal="HeathChange" from="StaticBody3D2/EnemyController" to="Player/CameraController/DebugUI/CanvasGroup/ItemList" method="UpdateTargetHealthLabel"]
 
 [editable path="Player"]

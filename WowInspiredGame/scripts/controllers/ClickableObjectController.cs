@@ -11,7 +11,7 @@ public partial class ClickableObjectController : StaticBody3D
 	[Signal]
 	public delegate void ClickedTargetEventHandler(Vector3 clickLocation);
     [Signal]
-    public delegate void ClickedNameEventHandler(Vector3 clickLocation);
+    public delegate void ClickedNameEventHandler(string objectName);
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()

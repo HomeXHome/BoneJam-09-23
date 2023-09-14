@@ -6,18 +6,38 @@
 
 [node name="CanvasGroup" type="CanvasGroup" parent="."]
 
-[node name="Panel" type="Panel" parent="CanvasGroup"]
-offset_left = 40.0
-offset_top = 24.0
-offset_right = 401.0
-offset_bottom = 140.0
+[node name="ItemList" type="ItemList" parent="CanvasGroup"]
+offset_right = 346.0
+offset_bottom = 223.0
+select_mode = 1
 script = ExtResource("1_nl4j7")
 
-[node name="Position" type="Label" parent="CanvasGroup/Panel"]
-offset_left = 10.0
-offset_top = 8.0
-offset_right = 351.0
-offset_bottom = 62.0
+[node name="Position" type="Label" parent="CanvasGroup/ItemList"]
+layout_mode = 2
+anchor_left = 0.492
+anchor_top = 0.186
+anchor_right = 0.492
+anchor_bottom = 0.186
+offset_left = -168.232
+offset_top = 77.522
+offset_right = 164.768
+offset_bottom = 177.522
+text = "aaa"
 horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_mode = 3
+autowrap_mode = 2
+
+[node name="Target" type="Label" parent="CanvasGroup/ItemList"]
+layout_mode = 2
+anchor_left = 0.492
+anchor_top = 0.186
+anchor_right = 0.492
+anchor_bottom = 0.186
+offset_left = -122.232
+offset_top = -28.478
+offset_right = 138.768
+offset_bottom = 61.522
+text = "aaa"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2

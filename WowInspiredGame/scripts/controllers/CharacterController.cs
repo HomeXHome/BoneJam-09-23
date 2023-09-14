@@ -14,6 +14,9 @@ public partial class CharacterController : CharacterBody3D
     private Node3D _playerLook;
     private bool _isAutorunEnabled = false;
 
+    private bool _isTargetRunEnabled = false;
+    private Vector3 _targetPosition = Vector3.Zero;
+
     public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
     public delegate void PositionChanged(Vector3 position);
@@ -44,26 +47,37 @@ public partial class CharacterController : CharacterBody3D
         HandleAutorun(_playerLook.GlobalPosition,ref velocity);
 
         if (direction != Vector3.Zero) {
-            HadleLooking();
+            HandleLooking();
 
             velocity.X = direction.X * Speed;
             velocity.Z = direction.Z * Speed;
             _isAutorunEnabled = false;
+            _isTargetRunEnabled = false;
         }
         else if (!_isAutorunEnabled) {
             velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
             velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
         }
 
-        if (OnPositionChanged != null) { OnPositionChanged(GlobalPosition); }
+        if (_targetPosition != Vector3.Zero && _isTargetRunEnabled) {
+            Vector3 targetVector = (_targetPosition - GlobalPosition).Normalized();
+            velocity.X = targetVector.X * Speed;
+            velocity.Z = targetVector.Z * Speed;
+        }
+
+        OnPositionChanged?.Invoke(new Vector3(MathF.Round(GlobalPosition.X, 3),
+                                                                       MathF.Round(GlobalPosition.Y, 3),
+                                                                       MathF.Round(GlobalPosition.Z, 3)));
         Velocity = velocity;
         
         MoveAndSlide();
-        GD.Print(_isAutorunEnabled);
     }
 
-    private void HadleLooking() {
+    private void HandleLooking() {
         LookAt(new Vector3(_playerLook.GlobalPosition.X, GlobalPosition.Y, _playerLook.GlobalPosition.Z));
+    }
+    private void HandleLooking(Vector3 position) {
+        LookAt(new Vector3(position.X, GlobalPosition.Y, position.Z));
     }
 
     private void HandleAutorun(Vector3 targetPosition, ref Vector3 velocity) {
@@ -72,8 +86,13 @@ public partial class CharacterController : CharacterBody3D
             _isAutorunEnabled=true;
             Vector3 direction = GlobalPosition.DirectionTo(targetPosition);
             velocity = direction * Speed;
-            HadleLooking();
+            HandleLooking();
         }
     }
 
+    private void OnTargetClicked(Vector3 targetPosition) {
+        _isTargetRunEnabled=true;
+        HandleLooking(targetPosition);
+        _targetPosition = targetPosition;
+    }
 }

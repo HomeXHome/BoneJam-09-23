@@ -88,9 +88,34 @@ mesh = SubResource("BoxMesh_n76bj")
 [node name="EnemyController" type="Node" parent="StaticBody3D2"]
 script = ExtResource("4_m7ont")
 
+[node name="StaticBody3D3" type="StaticBody3D" parent="."]
+transform = Transform3D(-1.97427, 0.207669, -0.243149, 0, 1.52081, 1.2989, 0.319762, 1.28219, -1.50125, -17, 1, -1.67633)
+script = ExtResource("4_i2mw3")
+ObjectName = "Bad Box"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.0227985, -0.0072403, -0.0112612)
+shape = SubResource("BoxShape3D_kxk2t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3"]
+mesh = SubResource("BoxMesh_n76bj")
+
+[node name="EnemyController" type="Node" parent="StaticBody3D3"]
+script = ExtResource("4_m7ont")
+Health = 100
+
 [connection signal="ClickedName" from="StaticBody3D2" to="Player/CameraController/DebugUI/CanvasGroup/ItemList" method="UpdateTargetLabel"]
+[connection signal="ClickedTarget" from="StaticBody3D2" to="Player/CharacterBody3D" method="OnTargetClicked"]
 [connection signal="ClickedTarget" from="StaticBody3D2" to="Player/CameraController/DebugUI/CanvasGroup/ItemList" method="UpdatePositionLabel"]
-[connection signal="HeathChange" from="StaticBody3D2/EnemyController" to="Player/CameraController/DebugUI/CanvasGroup/ItemList" method="UpdateTargetHealthLabel"]
+[connection signal="ClickedTarget" from="StaticBody3D2" to="StaticBody3D2/EnemyController" method="EmitHealth"]
+[connection signal="HealthChange" from="StaticBody3D2/EnemyController" to="Player/CameraController/DebugUI/CanvasGroup/ItemList" method="UpdateTargetHealthLabel"]
+[connection signal="HealthEmitter" from="StaticBody3D2/EnemyController" to="Player/CameraController/DebugUI/CanvasGroup/ItemList" method="UpdateTargetHealthLabel"]
+[connection signal="ClickedName" from="StaticBody3D3" to="Player/CameraController/DebugUI/CanvasGroup/ItemList" method="UpdateTargetLabel"]
+[connection signal="ClickedTarget" from="StaticBody3D3" to="Player/CharacterBody3D" method="OnTargetClicked"]
+[connection signal="ClickedTarget" from="StaticBody3D3" to="Player/CameraController/DebugUI/CanvasGroup/ItemList" method="UpdatePositionLabel"]
+[connection signal="ClickedTarget" from="StaticBody3D3" to="StaticBody3D3/EnemyController" method="EmitHealth"]
+[connection signal="HealthChange" from="StaticBody3D3/EnemyController" to="Player/CameraController/DebugUI/CanvasGroup/ItemList" method="UpdateTargetHealthLabel"]
+[connection signal="HealthEmitter" from="StaticBody3D3/EnemyController" to="Player/CameraController/DebugUI/CanvasGroup/ItemList" method="UpdateTargetHealthLabel"]
 
 [editable path="Player"]
 [editable path="Player/CameraController"]

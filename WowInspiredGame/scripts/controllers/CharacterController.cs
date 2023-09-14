@@ -65,9 +65,12 @@ public partial class CharacterController : CharacterBody3D
             velocity.Z = targetVector.Z * Speed;
         }
 
-        OnPositionChanged?.Invoke(new Vector3(MathF.Round(GlobalPosition.X, 3),
+        if (OnPositionChanged != null) {
+            OnPositionChanged(new Vector3(MathF.Round(GlobalPosition.X, 3),
                                                                        MathF.Round(GlobalPosition.Y, 3),
                                                                        MathF.Round(GlobalPosition.Z, 3)));
+        }
+
         Velocity = velocity;
         
         MoveAndSlide();

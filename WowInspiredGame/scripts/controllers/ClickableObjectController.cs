@@ -7,6 +7,7 @@ public partial class ClickableObjectController : StaticBody3D
 	public string ObjectName;
 
 	private CollisionShape3D _collisionObject;
+    private Node enemyController;
 
 	[Signal]
 	public delegate void ClickedTargetEventHandler(Vector3 clickLocation);
@@ -17,11 +18,12 @@ public partial class ClickableObjectController : StaticBody3D
     public override void _Ready()
 	{
 		_collisionObject = GetNode<CollisionShape3D>("CollisionShape3D");
+        enemyController = GetNode<Node>("EnemyController");
 
     }
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _Process(double delta)
 	{
 
 	}

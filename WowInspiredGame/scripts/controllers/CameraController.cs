@@ -26,9 +26,7 @@ public partial class CameraController : Node3D
     private Camera3D _camera;
     private Node3D _lookAt;
 
-    //private Node3D _playerLook;
 
-    // Called when the node enters the scene tree for the first time.
     public override void _Ready() {
 
         _springArm = GetNode<SpringArm3D>("SpringArm3D");
@@ -37,7 +35,6 @@ public partial class CameraController : Node3D
         _lookAt = GetTree().GetNodesInGroup("LookAt")[0] as Node3D;
     }
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta) {
 
         GlobalPosition = _character.Position + CameraStandardPos(); // Set camera controller pos following character

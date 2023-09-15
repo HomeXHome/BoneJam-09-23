@@ -9,10 +9,8 @@ public partial class ClickableObjectController : StaticBody3D
 	private CollisionShape3D _collisionObject;
     private Node enemyController;
 
-	[Signal]
-	public delegate void ClickedTargetEventHandler(Vector3 clickLocation);
     [Signal]
-    public delegate void ClickedNameEventHandler(string objectName);
+    public delegate void ClickedObjectEventHandler(Node3D node, string Name);
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -29,13 +27,15 @@ public partial class ClickableObjectController : StaticBody3D
 	}
 
 
-    public override void _InputEvent(Camera3D camera, InputEvent @event, Vector3 position, Vector3 normal, int shapeIdx) {
-        base._InputEvent(camera, @event, position, normal, shapeIdx);
+    public override void _InputEvent(Camera3D camera,
+                                     InputEvent @event,
+                                     Vector3 position,
+                                     Vector3 normal,
+                                     int shapeIdx) {
         if (@event is InputEventMouseButton eventMouseButton
-        && eventMouseButton.IsPressed()
-        && eventMouseButton.ButtonIndex == MouseButton.Left) {
-            EmitSignal(nameof(ClickedTarget), GlobalPosition);
-            EmitSignal(nameof(ClickedName), ObjectName);
+            && eventMouseButton.IsPressed()
+            && eventMouseButton.ButtonIndex == MouseButton.Left) {
+            EmitSignal(nameof(ClickedObject), (Node3D)this, ObjectName);
         }
     }
 }

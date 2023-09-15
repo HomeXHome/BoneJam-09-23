@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Enemy : Node
+public partial class Enemy : Node3D
 {
 	[Export]
 	public int Health = 10;

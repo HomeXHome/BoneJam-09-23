@@ -21,7 +21,7 @@ public partial class DebugPanel : ItemList
 
 
         var _characterController = GetTree().GetNodesInGroup("Player")[0] as CharacterController;
-        _characterController.OnPositionChanged += UpdatePositionLabel;
+        //_characterController.OnPositionChanged += UpdatePositionLabel;
 		UpdateTargetLabel("No target");
         UpdateTargetHealthLabel(0,0);
     }

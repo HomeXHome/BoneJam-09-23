@@ -19,11 +19,13 @@ public partial class CharacterController : CharacterBody3D
 
     public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
-    public delegate void PositionChanged(Vector3 position);
-    public event PositionChanged OnPositionChanged;
+    //public delegate void PositionChanged(Vector3 position);
+    //public event PositionChanged OnPositionChanged;
 
     public override void _Ready() {
+
         _playerLook = GetNode<Node3D>("../CameraController/PlayerLook/LookTarget");
+
     }
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -47,6 +49,7 @@ public partial class CharacterController : CharacterBody3D
         HandleAutorun(_playerLook.GlobalPosition,ref velocity);
 
         if (direction != Vector3.Zero) {
+
             HandleLooking();
 
             velocity.X = direction.X * Speed;
@@ -54,35 +57,48 @@ public partial class CharacterController : CharacterBody3D
             _isAutorunEnabled = false;
             _isTargetRunEnabled = false;
         }
+        // Stopping if no input
         else if (!_isAutorunEnabled) {
             velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
             velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
         }
 
+        // Autorun here
         if (_targetPosition != Vector3.Zero && _isTargetRunEnabled) {
             Vector3 targetVector = (_targetPosition - GlobalPosition).Normalized();
             velocity.X = targetVector.X * Speed;
             velocity.Z = targetVector.Z * Speed;
         }
 
-        if (OnPositionChanged != null) {
-            OnPositionChanged(new Vector3(MathF.Round(GlobalPosition.X, 3),
-                                                                       MathF.Round(GlobalPosition.Y, 3),
-                                                                       MathF.Round(GlobalPosition.Z, 3)));
-        }
+        //DEBUG ZONE--------------------------------------------------------------
+        //OnPositionChanged?.Invoke(VectorRounder.RoundVector(GlobalPosition, 3));
+        //------------------------------------------------------------------------
 
         Velocity = velocity;
         
         MoveAndSlide();
     }
 
+    /// <summary>
+    /// Handle looking towards movement
+    /// </summary>
     private void HandleLooking() {
         LookAt(new Vector3(_playerLook.GlobalPosition.X, GlobalPosition.Y, _playerLook.GlobalPosition.Z));
     }
+
+    /// <summary>
+    /// Handle looking towards target position. 
+    /// </summary>
+    /// <param name="position"> The target position at which the player needs to be looking.</param>
     private void HandleLooking(Vector3 position) {
         LookAt(new Vector3(position.X, GlobalPosition.Y, position.Z));
     }
 
+    /// <summary>
+    /// Method for autorun.
+    /// </summary>
+    /// <param name="targetPosition"></param>
+    /// <param name="velocity"></param>
     private void HandleAutorun(Vector3 targetPosition, ref Vector3 velocity) {
 
         if (Input.IsActionJustPressed("NumLock")) {
@@ -98,4 +114,5 @@ public partial class CharacterController : CharacterBody3D
         HandleLooking(targetPosition);
         _targetPosition = targetPosition;
     }
+
 }

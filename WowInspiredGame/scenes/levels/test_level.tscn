@@ -96,8 +96,28 @@ mesh = SubResource("BoxMesh_n76bj")
 script = ExtResource("4_m7ont")
 Health = 100
 
+[node name="Enemy3" type="StaticBody3D" parent="." groups=["Interactable"]]
+transform = Transform3D(-1.97427, 0.207669, -0.243149, 0, 1.52081, 1.2989, 0.319762, 1.28219, -1.50125, -54.5389, 2.47494, 16.3378)
+collision_layer = 7
+script = ExtResource("4_i2mw3")
+ObjectName = "Far Box"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemy3"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.0227985, -0.0072403, -0.0112612)
+shape = SubResource("BoxShape3D_kxk2t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Enemy3"]
+mesh = SubResource("BoxMesh_n76bj")
+
+[node name="EnemyController" type="Node3D" parent="Enemy3"]
+script = ExtResource("4_m7ont")
+Health = 100
+
+[connection signal="ClickedName" from="Player/CharacterBody3D/TargetController" to="Player/CameraController/UI/TargetUIPanel" method="ShowTargetNameOnUI"]
 [connection signal="ClickedTarget" from="Player/CharacterBody3D/TargetController" to="Player/CharacterBody3D" method="OnTargetClicked"]
+[connection signal="HideFarTarget" from="Player/CharacterBody3D/TargetController" to="Player/CameraController/UI/TargetUIPanel" method="HideTargetUI"]
 [connection signal="ClickedObject" from="Enemy2" to="Player/CharacterBody3D/TargetController" method="CheckIfTargeted"]
+[connection signal="ClickedObject" from="Enemy3" to="Player/CharacterBody3D/TargetController" method="CheckIfTargeted"]
 
 [editable path="Player"]
 [editable path="Player/CameraController"]

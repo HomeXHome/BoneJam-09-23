@@ -11,6 +11,8 @@ public partial class TargetController : Node3D
     public delegate void ClickedTargetEventHandler(Vector3 clickLocation);
     [Signal]
     public delegate void ClickedNameEventHandler(string objectName);
+    [Signal]
+    public delegate void HideFarTargetEventHandler();
 
     private Node3D _playerTarget = null;
 
@@ -39,6 +41,7 @@ public partial class TargetController : Node3D
 				_playerTarget = null;
 				GD.Print("Убираю UI");  // TODO <--------------------------------------
 			}
+			EmitSignal(nameof(HideFarTarget));
             _farCollisionShapes.Remove(collision);
 		}
     }
@@ -68,7 +71,8 @@ public partial class TargetController : Node3D
                 }
             } else {
 				_playerTarget = target;
-				GD.Print("Вызываю таргет ui"); // TODO <--------------------------------------
+                EmitSignal(nameof(ClickedName), objectName);
+                GD.Print("Вызываю таргет ui"); // TODO <--------------------------------------
             }
 		}
 	}

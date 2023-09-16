@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bue1li662vbqh"]
+[gd_scene load_steps=4 format=3 uid="uid://bue1li662vbqh"]
 
 [ext_resource type="Script" path="res://scripts/controllers/CameraController.cs" id="1_qfyaf"]
+[ext_resource type="Script" path="res://scripts/ui/TargetInfoUI.cs" id="2_0ohy4"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_7twmg"]
 
@@ -22,3 +23,26 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.34595, 3.32936)
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, -3.33054, -10.8121)
 visible = false
 mesh = SubResource("SphereMesh_7twmg")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="TargetUIPanel" type="PanelContainer" parent="UI"]
+custom_minimum_size = Vector2(300, 100)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 15.0
+offset_right = 150.0
+offset_bottom = 165.0
+grow_horizontal = 2
+script = ExtResource("2_0ohy4")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/TargetUIPanel"]
+layout_mode = 2
+
+[node name="TargetName" type="Label" parent="UI/TargetUIPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "aaa"
+horizontal_alignment = 1

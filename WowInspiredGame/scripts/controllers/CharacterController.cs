@@ -11,6 +11,7 @@ public partial class CharacterController : CharacterBody3D
     [Export]
     public float TurnSpeed = 0.1f;
 
+    private float stoppingDistance = 2.5f;
     private Node3D _playerLook;
     private bool _isAutorunEnabled = false;
 
@@ -68,6 +69,13 @@ public partial class CharacterController : CharacterBody3D
             Vector3 targetVector = (_targetPosition - GlobalPosition).Normalized();
             velocity.X = targetVector.X * Speed;
             velocity.Z = targetVector.Z * Speed;
+
+            //Stopping before reaching target
+            float distanceToTarget = (_targetPosition - GlobalPosition).Length();
+            if (distanceToTarget < stoppingDistance) {
+                velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+                velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
+            }
         }
 
         //DEBUG ZONE--------------------------------------------------------------

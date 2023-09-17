@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://cvv55cr5joxbo"]
+[gd_scene load_steps=8 format=3 uid="uid://cvv55cr5joxbo"]
 
 [ext_resource type="Script" path="res://scripts/controllers/CharacterController.cs" id="1_p61ex"]
 [ext_resource type="Script" path="res://scripts/controllers/TargetController.cs" id="2_f38da"]
+[ext_resource type="Script" path="res://scripts/controllers/AttackController.cs" id="3_5kds8"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_2ek2x"]
 
@@ -52,7 +53,17 @@ autostart = true
 [node name="TargetController" type="Node3D" parent="CharacterBody3D"]
 script = ExtResource("2_f38da")
 
+[node name="AttackController" type="Node3D" parent="CharacterBody3D"]
+script = ExtResource("3_5kds8")
+
+[node name="CooldownTimer" type="Timer" parent="CharacterBody3D/AttackController"]
+wait_time = 2.5
+one_shot = true
+
 [connection signal="body_entered" from="CharacterBody3D/PerceptionController/CloseArea" to="CharacterBody3D/TargetController" method="AddEntityToCloseList"]
 [connection signal="body_exited" from="CharacterBody3D/PerceptionController/CloseArea" to="CharacterBody3D/TargetController" method="RemoveEntityFromCloseList"]
 [connection signal="body_entered" from="CharacterBody3D/PerceptionController/FarArea" to="CharacterBody3D/TargetController" method="AddEntityToFarList"]
 [connection signal="body_exited" from="CharacterBody3D/PerceptionController/FarArea" to="CharacterBody3D/TargetController" method="RemoveEntityFromFarList"]
+[connection signal="Attack" from="CharacterBody3D/AttackController" to="CharacterBody3D/TargetController" method="SetAttackPower"]
+[connection signal="Cooldown" from="CharacterBody3D/AttackController" to="CharacterBody3D/TargetController" method="HandleAutoAttack"]
+[connection signal="timeout" from="CharacterBody3D/AttackController/CooldownTimer" to="CharacterBody3D/AttackController" method="HandleReadyToAttackEmit"]

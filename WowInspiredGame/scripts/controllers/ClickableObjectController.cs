@@ -3,28 +3,26 @@ using System;
 
 public partial class ClickableObjectController : StaticBody3D
 {
-	[Export]
-	public string ObjectName;
+    [Export]
+    public string ObjectName;
 
-	private CollisionShape3D _collisionObject;
-    private Node enemyController;
+    private CollisionShape3D _collisionObject;
+    private HealthController healthController;
 
     [Signal]
     public delegate void ClickedObjectEventHandler(Node3D node, string Name);
+    [Signal]
+    public delegate void ClickedObjectHealthEventHandler(int[] health);
 
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
-	{
-		_collisionObject = GetNode<CollisionShape3D>("CollisionShape3D");
-        enemyController = GetNode<Node>("EnemyController");
+    public override void _Ready() {
+        _collisionObject = GetNode<CollisionShape3D>("CollisionShape3D");
+        healthController = GetNode<HealthController>("HealthController");
 
     }
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta)
-	{
+    public override void _Process(double delta) {
 
-	}
+    }
 
 
     public override void _InputEvent(Camera3D camera,
@@ -36,6 +34,12 @@ public partial class ClickableObjectController : StaticBody3D
             && eventMouseButton.IsPressed()
             && eventMouseButton.ButtonIndex == MouseButton.Left) {
             EmitSignal(nameof(ClickedObject), (Node3D)this, ObjectName);
+            GetHealthForUI();
         }
+    }
+
+    public void GetHealthForUI() {
+        int[] healthValues = healthController.ReturnAllHealth();
+        EmitSignal(nameof(ClickedObjectHealth), healthValues);
     }
 }

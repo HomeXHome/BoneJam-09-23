@@ -16,6 +16,8 @@ public partial class TargetController : Node3D
     [Signal]
     public delegate void HideFarTargetEventHandler();
     [Signal]
+    public delegate void HidePickableTargetEventHandler();
+    [Signal]
     public delegate void ClickedTargetHealthEventHandler(int health);
     [Signal]
     public delegate void ReturnTargetHealthEventHandler(int[] health);
@@ -72,6 +74,7 @@ public partial class TargetController : Node3D
 
     public void CheckIfTargeted(Node3D target, string objectName) {
         if (CheckIfObjectIsFar(target)) {
+            EmitSignal(nameof(ClickedName), objectName);
             if (_playerTarget == target) {
                 switch (CheckIfObjectIsClose(target)) {
                     case true:
@@ -86,7 +89,6 @@ public partial class TargetController : Node3D
             else {
                 SetTargetForPlayer(target);
             }
-            EmitSignal(nameof(ClickedName), objectName);
         }
     }
 
@@ -100,6 +102,11 @@ public partial class TargetController : Node3D
     }
 
     public void HandleAttack() {
+        if (_playerTarget.IsInGroup("Pickable")) {
+            //TODO Pick
+            PickUpAndRemoveObject();
+            return;
+        }
         if (_attackController.ReturnReady() && CheckIfObjectIsClose(_playerTarget)) {
             _attackController.HandleAttacking();
             _healthController.ChangeHealth(_currentAttackPower);
@@ -116,5 +123,12 @@ public partial class TargetController : Node3D
 
     public void SetAttackPower(int power) {
         _currentAttackPower = power;
+    }
+
+    public void PickUpAndRemoveObject() {
+        _farCollisionShapes.Remove(_playerTarget);
+        _playerTarget.Hide();
+        ResetTargetForPlayer();
+        EmitSignal(nameof(HidePickableTarget));
     }
 }

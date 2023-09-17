@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://cvv55cr5joxbo"]
+[gd_scene load_steps=9 format=3 uid="uid://cvv55cr5joxbo"]
 
 [ext_resource type="Script" path="res://scripts/controllers/CharacterController.cs" id="1_p61ex"]
 [ext_resource type="Script" path="res://scripts/controllers/TargetController.cs" id="2_f38da"]
 [ext_resource type="Script" path="res://scripts/controllers/AttackController.cs" id="3_5kds8"]
+[ext_resource type="Script" path="res://scripts/controllers/InventoryController.cs" id="4_jmhd0"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_2ek2x"]
 
@@ -59,6 +60,9 @@ script = ExtResource("3_5kds8")
 [node name="CooldownTimer" type="Timer" parent="CharacterBody3D/AttackController"]
 wait_time = 2.5
 one_shot = true
+
+[node name="InventoryController" type="Node3D" parent="CharacterBody3D"]
+script = ExtResource("4_jmhd0")
 
 [connection signal="body_entered" from="CharacterBody3D/PerceptionController/CloseArea" to="CharacterBody3D/TargetController" method="AddEntityToCloseList"]
 [connection signal="body_exited" from="CharacterBody3D/PerceptionController/CloseArea" to="CharacterBody3D/TargetController" method="RemoveEntityFromCloseList"]

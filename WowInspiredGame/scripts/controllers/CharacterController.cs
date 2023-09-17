@@ -91,7 +91,9 @@ public partial class CharacterController : CharacterBody3D
     /// </summary>
     /// <param name="position"> The target position at which the player needs to be looking.</param>
     private void HandleLooking(Vector3 position) {
-        LookAt(new Vector3(position.X, GlobalPosition.Y, position.Z));
+        if (position != GlobalPosition) {
+            LookAt(new Vector3(position.X, GlobalPosition.Y, position.Z));
+        }
     }
 
     /// <summary>

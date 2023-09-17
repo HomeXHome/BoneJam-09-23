@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://nbyklge62rog"]
+[gd_scene load_steps=16 format=3 uid="uid://nbyklge62rog"]
 
 [ext_resource type="PackedScene" uid="uid://cvv55cr5joxbo" path="res://scenes/player/player_v0.1.tscn" id="1_f5ul6"]
 [ext_resource type="Texture2D" uid="uid://vq4h8xy32n7a" path="res://textures/kenney's_prototype_textures/texture_01.png" id="1_iumi6"]
 [ext_resource type="PackedScene" uid="uid://bue1li662vbqh" path="res://scenes/player/camera_controller.tscn" id="2_cyej6"]
 [ext_resource type="Script" path="res://scripts/controllers/ClickableObjectController.cs" id="4_i2mw3"]
 [ext_resource type="Script" path="res://scripts/npc/HealthController.cs" id="5_lj3sg"]
+[ext_resource type="Script" path="res://scripts/ui/InventoryTag.cs" id="6_rkunk"]
 
 [sub_resource type="Environment" id="Environment_xm8d3"]
 
@@ -23,6 +24,10 @@ albedo_texture = ExtResource("1_iumi6")
 [sub_resource type="BoxShape3D" id="BoxShape3D_kxk2t"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_n76bj"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_sci65"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_4o3fc"]
 
 [node name="WorldEnvironment" type="WorldEnvironment"]
 environment = SubResource("Environment_xm8d3")
@@ -130,15 +135,39 @@ mesh = SubResource("BoxMesh_n76bj")
 script = ExtResource("5_lj3sg")
 Health = 55
 
+[node name="Pickable" type="StaticBody3D" parent="." groups=["Interactable", "Pickable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7953, 0, 3.72839)
+collision_layer = 7
+script = ExtResource("4_i2mw3")
+ObjectName = "Pickable Orb"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pickable"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("SphereShape3D_sci65")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pickable"]
+mesh = SubResource("SphereMesh_4o3fc")
+skeleton = NodePath("../CollisionShape3D")
+
+[node name="HealthController" type="Node3D" parent="Pickable"]
+script = ExtResource("5_lj3sg")
+Health = 1
+
+[node name="InventoryTag" type="Node3D" parent="Pickable"]
+script = ExtResource("6_rkunk")
+
 [connection signal="ClickedName" from="Player/CharacterBody3D/TargetController" to="Player/CameraController/UI/TargetUIPanel" method="ShowTargetNameOnUI"]
 [connection signal="ClickedTarget" from="Player/CharacterBody3D/TargetController" to="Player/CharacterBody3D" method="OnTargetClicked"]
 [connection signal="ClickedTargetNoMovement" from="Player/CharacterBody3D/TargetController" to="Player/CharacterBody3D" method="HandleLooking"]
 [connection signal="HideFarTarget" from="Player/CharacterBody3D/TargetController" to="Player/CameraController/UI/TargetUIPanel" method="HideTargetUI"]
+[connection signal="HidePickableTarget" from="Player/CharacterBody3D/TargetController" to="Player/CameraController/UI/TargetUIPanel" method="HideTargetUI"]
 [connection signal="ReturnTargetHealth" from="Player/CharacterBody3D/TargetController" to="Player/CameraController/UI/TargetUIPanel" method="ShowTargetHealthInUI"]
 [connection signal="ClickedObject" from="Enemy3" to="Player/CharacterBody3D/TargetController" method="CheckIfTargeted"]
 [connection signal="ClickedObjectHealth" from="Enemy3" to="Player/CameraController/UI/TargetUIPanel" method="ShowTargetHealthInUI"]
 [connection signal="ClickedObject" from="Enemy4" to="Player/CharacterBody3D/TargetController" method="CheckIfTargeted"]
 [connection signal="ClickedObjectHealth" from="Enemy4" to="Player/CameraController/UI/TargetUIPanel" method="ShowTargetHealthInUI"]
+[connection signal="ClickedObject" from="Pickable" to="Player/CharacterBody3D/TargetController" method="CheckIfTargeted"]
+[connection signal="ClickedObjectHealth" from="Pickable" to="Player/CameraController/UI/TargetUIPanel" method="ShowTargetHealthInUI"]
 
 [editable path="Player"]
 [editable path="Player/CameraController"]

@@ -36,7 +36,7 @@ collision_layer = 2
 input_ray_pickable = false
 
 [node name="CloseRange" type="CollisionShape3D" parent="CharacterBody3D/PerceptionController/CloseArea"]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 1.08997, -0.0547318)
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 1.08997, -0.0547318)
 shape = SubResource("CylinderShape3D_n48hk")
 
 [node name="FarArea" type="Area3D" parent="CharacterBody3D/PerceptionController"]

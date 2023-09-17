@@ -10,6 +10,8 @@ public partial class TargetController : Node3D
     [Signal]
     public delegate void ClickedTargetEventHandler(Vector3 clickLocation);
     [Signal]
+    public delegate void ClickedTargetNoMovementEventHandler(Vector3 clickLocation);
+    [Signal]
     public delegate void ClickedNameEventHandler(string objectName);
     [Signal]
     public delegate void HideFarTargetEventHandler();
@@ -73,6 +75,7 @@ public partial class TargetController : Node3D
             if (_playerTarget == target) {
                 switch (CheckIfObjectIsClose(target)) {
                     case true:
+                        EmitSignal(nameof(ClickedTargetNoMovement), target.GlobalPosition);
                         HandleAttack();
                         break;
                     case false:
@@ -97,7 +100,7 @@ public partial class TargetController : Node3D
     }
 
     public void HandleAttack() {
-        if (_attackController.ReturnReady()) {
+        if (_attackController.ReturnReady() && CheckIfObjectIsClose(_playerTarget)) {
             _attackController.HandleAttacking();
             _healthController.ChangeHealth(_currentAttackPower);
             EmitSignal(nameof(ClickedTargetHealth), _currentAttackPower);

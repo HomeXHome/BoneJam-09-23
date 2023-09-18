@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://c13pva6tvhsy5"]
+
+[ext_resource type="Texture2D" uid="uid://ceya3c0y1b2a6" path="res://textures/test_textures/test0.png" id="1_j3ftv"]
+[ext_resource type="Script" path="res://scripts/ui/HoverButton.cs" id="2_fabps"]
+
+[node name="TextureButton" type="TextureButton"]
+texture_normal = ExtResource("1_j3ftv")
+script = ExtResource("2_fabps")

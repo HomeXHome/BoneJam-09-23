@@ -1,11 +1,13 @@
-[gd_scene load_steps=16 format=3 uid="uid://nbyklge62rog"]
+[gd_scene load_steps=18 format=3 uid="uid://nbyklge62rog"]
 
 [ext_resource type="PackedScene" uid="uid://cvv55cr5joxbo" path="res://scenes/player/player_v0.1.tscn" id="1_f5ul6"]
 [ext_resource type="Texture2D" uid="uid://vq4h8xy32n7a" path="res://textures/kenney's_prototype_textures/texture_01.png" id="1_iumi6"]
 [ext_resource type="PackedScene" uid="uid://bue1li662vbqh" path="res://scenes/player/camera_controller.tscn" id="2_cyej6"]
 [ext_resource type="Script" path="res://scripts/controllers/ClickableObjectController.cs" id="4_i2mw3"]
 [ext_resource type="Script" path="res://scripts/npc/HealthController.cs" id="5_lj3sg"]
-[ext_resource type="Script" path="res://scripts/ui/InventoryTag.cs" id="6_rkunk"]
+[ext_resource type="Script" path="res://scripts/ui/Tag.cs" id="6_cs30n"]
+[ext_resource type="Texture2D" uid="uid://ceya3c0y1b2a6" path="res://textures/test_textures/test0.png" id="7_5evr1"]
+[ext_resource type="Texture2D" uid="uid://klyiyhw0h2qv" path="res://textures/test_textures/test1.png" id="8_unuxr"]
 
 [sub_resource type="Environment" id="Environment_xm8d3"]
 
@@ -153,21 +155,60 @@ skeleton = NodePath("../CollisionShape3D")
 script = ExtResource("5_lj3sg")
 Health = 1
 
-[node name="InventoryTag" type="Node3D" parent="Pickable"]
-script = ExtResource("6_rkunk")
+[node name="Tag" type="Node3D" parent="Pickable" node_paths=PackedStringArray("Sprite")]
+script = ExtResource("6_cs30n")
+ItemName = "Pickable Orb"
+Description = "This is a test orb"
+Sprite = NodePath("Sprite2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="Pickable/Tag"]
+position = Vector2(-1202, 72)
+texture = ExtResource("7_5evr1")
+
+[node name="Pickable2" type="StaticBody3D" parent="." groups=["Interactable", "Pickable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7953, 0, -2.06562)
+collision_layer = 7
+script = ExtResource("4_i2mw3")
+ObjectName = "Food"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pickable2"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("SphereShape3D_sci65")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pickable2"]
+mesh = SubResource("SphereMesh_4o3fc")
+skeleton = NodePath("../CollisionShape3D")
+
+[node name="HealthController" type="Node3D" parent="Pickable2"]
+script = ExtResource("5_lj3sg")
+Health = 1
+
+[node name="Tag" type="Node3D" parent="Pickable2" node_paths=PackedStringArray("Sprite")]
+script = ExtResource("6_cs30n")
+ItemName = "Food"
+Description = "Yummy!"
+Sprite = NodePath("Sprite2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="Pickable2/Tag"]
+position = Vector2(-1202, 72)
+texture = ExtResource("8_unuxr")
 
 [connection signal="ClickedName" from="Player/CharacterBody3D/TargetController" to="Player/CameraController/UI/TargetUIPanel" method="ShowTargetNameOnUI"]
 [connection signal="ClickedTarget" from="Player/CharacterBody3D/TargetController" to="Player/CharacterBody3D" method="OnTargetClicked"]
 [connection signal="ClickedTargetNoMovement" from="Player/CharacterBody3D/TargetController" to="Player/CharacterBody3D" method="HandleLooking"]
 [connection signal="HideFarTarget" from="Player/CharacterBody3D/TargetController" to="Player/CameraController/UI/TargetUIPanel" method="HideTargetUI"]
 [connection signal="HidePickableTarget" from="Player/CharacterBody3D/TargetController" to="Player/CameraController/UI/TargetUIPanel" method="HideTargetUI"]
+[connection signal="PickableInventoryTag" from="Player/CharacterBody3D/TargetController" to="Player/CharacterBody3D/InventoryController" method="AddTag"]
 [connection signal="ReturnTargetHealth" from="Player/CharacterBody3D/TargetController" to="Player/CameraController/UI/TargetUIPanel" method="ShowTargetHealthInUI"]
+[connection signal="NewItemAdded" from="Player/CharacterBody3D/InventoryController" to="Player/CameraController/UI/InventoryUIPanel" method="CreateInventoryButton"]
 [connection signal="ClickedObject" from="Enemy3" to="Player/CharacterBody3D/TargetController" method="CheckIfTargeted"]
 [connection signal="ClickedObjectHealth" from="Enemy3" to="Player/CameraController/UI/TargetUIPanel" method="ShowTargetHealthInUI"]
 [connection signal="ClickedObject" from="Enemy4" to="Player/CharacterBody3D/TargetController" method="CheckIfTargeted"]
 [connection signal="ClickedObjectHealth" from="Enemy4" to="Player/CameraController/UI/TargetUIPanel" method="ShowTargetHealthInUI"]
 [connection signal="ClickedObject" from="Pickable" to="Player/CharacterBody3D/TargetController" method="CheckIfTargeted"]
 [connection signal="ClickedObjectHealth" from="Pickable" to="Player/CameraController/UI/TargetUIPanel" method="ShowTargetHealthInUI"]
+[connection signal="ClickedObject" from="Pickable2" to="Player/CharacterBody3D/TargetController" method="CheckIfTargeted"]
+[connection signal="ClickedObjectHealth" from="Pickable2" to="Player/CameraController/UI/TargetUIPanel" method="ShowTargetHealthInUI"]
 
 [editable path="Player"]
 [editable path="Player/CameraController"]

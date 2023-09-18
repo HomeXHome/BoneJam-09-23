@@ -8,16 +8,17 @@ public partial class ClickableObjectController : StaticBody3D
 
     private CollisionShape3D _collisionObject;
     private HealthController healthController;
+    private InventoryTag _tag;
 
     [Signal]
     public delegate void ClickedObjectEventHandler(Node3D node, string Name);
     [Signal]
     public delegate void ClickedObjectHealthEventHandler(int[] health);
 
+
     public override void _Ready() {
         _collisionObject = GetNode<CollisionShape3D>("CollisionShape3D");
         healthController = GetNode<HealthController>("HealthController");
-
     }
 
     public override void _Process(double delta) {

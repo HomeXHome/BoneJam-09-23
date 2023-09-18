@@ -26,8 +26,7 @@ public partial class InventoryUIPanel : PanelContainer
 	}
 
 	public void CreateInventoryButton(Tag tag) {
-        var buttonScene = GD.Load<PackedScene>("scenes/UI/texture_button.tscn");
-        TextureButton button = (TextureButton)buttonScene.Instantiate();
+        var button = new TextureButton();
 		button.TextureNormal = tag.Sprite.Texture;
 		button.SetMeta("LabelName", tag.ItemName);
         button.SetMeta("LabelDescription", tag.Description);

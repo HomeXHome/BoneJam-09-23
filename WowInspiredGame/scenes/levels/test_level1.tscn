@@ -1,0 +1,245 @@
+[gd_scene load_steps=23 format=3 uid="uid://clbke1d06u715"]
+
+[ext_resource type="Texture2D" uid="uid://bfei0x0ub56ob" path="res://textures/kenney's_prototype_textures/texture_12.png" id="1_rq518"]
+[ext_resource type="Script" path="res://scripts/controllers/ClickableObjectController.cs" id="3_y2qrv"]
+[ext_resource type="Script" path="res://scripts/npc/HealthController.cs" id="4_n7boi"]
+[ext_resource type="Script" path="res://scripts/ui/Tag.cs" id="5_jocyk"]
+[ext_resource type="Script" path="res://scripts/controllers/CharacterController.cs" id="6_kee7c"]
+[ext_resource type="Texture2D" uid="uid://ceya3c0y1b2a6" path="res://textures/test_textures/test0.png" id="6_smq5q"]
+[ext_resource type="Script" path="res://scripts/controllers/TargetController.cs" id="7_nohn5"]
+[ext_resource type="Script" path="res://scripts/controllers/AttackController.cs" id="8_duky3"]
+[ext_resource type="Script" path="res://scripts/controllers/InventoryController.cs" id="9_o744h"]
+[ext_resource type="Script" path="res://scripts/controllers/CameraController.cs" id="10_3nacf"]
+[ext_resource type="Script" path="res://scripts/ui/TargetInfoUI.cs" id="11_dn8ej"]
+[ext_resource type="Script" path="res://scripts/ui/InventoryUIPanel.cs" id="12_v0crv"]
+[ext_resource type="Script" path="res://scripts/ui/InventoryContainer.cs" id="13_umqxf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8xn52"]
+albedo_texture = ExtResource("1_rq518")
+
+[sub_resource type="BoxMesh" id="BoxMesh_v2qpt"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_xcpx8"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_7rg70"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_xe734"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6cu1c"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_bpjab"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_jwgtk"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_4sea2"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+transform = Transform3D(100, 0, 0, 0, 0.5, 0, 0, 0, 100, 0, 0, 0)
+layers = 31
+material_override = SubResource("StandardMaterial3D_8xn52")
+use_collision = true
+collision_layer = 31
+mesh = SubResource("BoxMesh_v2qpt")
+
+[node name="Pickable" type="StaticBody3D" parent="." groups=["Interactable", "Pickable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7953, 1.0899, 3.72839)
+collision_layer = 7
+script = ExtResource("3_y2qrv")
+ObjectName = "Pickable Orb"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pickable"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("SphereShape3D_xcpx8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pickable"]
+mesh = SubResource("SphereMesh_7rg70")
+skeleton = NodePath("../CollisionShape3D")
+
+[node name="HealthController" type="Node3D" parent="Pickable"]
+script = ExtResource("4_n7boi")
+Health = 1
+
+[node name="Tag" type="Node3D" parent="Pickable" node_paths=PackedStringArray("Sprite")]
+script = ExtResource("5_jocyk")
+ItemName = "Pickable Orb"
+Description = "This is a test orb"
+Sprite = NodePath("Sprite2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="Pickable/Tag"]
+position = Vector2(-1202, 72)
+texture = ExtResource("6_smq5q")
+
+[node name="Player" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0259609, 0.974423, 0.00275305)
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="Player" groups=["Player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0427852, -0.0386047, 0.0192041)
+collision_layer = 16
+collision_mask = 16
+input_ray_pickable = false
+script = ExtResource("6_kee7c")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_xe734")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/CharacterBody3D/MeshInstance3D"]
+transform = Transform3D(0.406033, 2.04218e-10, -1.82088e-09, -1.49378e-09, 0.0366167, -0.496655, -6.29734e-11, 0.448155, 0.0405794, 0, 0.378437, -0.492071)
+mesh = SubResource("CapsuleMesh_xe734")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player/CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_6cu1c")
+
+[node name="LookAt" type="Node3D" parent="Player/CharacterBody3D" groups=["LookAt"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -3.07336e-08)
+
+[node name="PerceptionController" type="Node3D" parent="Player/CharacterBody3D"]
+
+[node name="CloseArea" type="Area3D" parent="Player/CharacterBody3D/PerceptionController"]
+collision_layer = 2
+input_ray_pickable = false
+
+[node name="CloseRange" type="CollisionShape3D" parent="Player/CharacterBody3D/PerceptionController/CloseArea"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 1.08997, -0.0547318)
+shape = SubResource("CylinderShape3D_bpjab")
+
+[node name="FarArea" type="Area3D" parent="Player/CharacterBody3D/PerceptionController"]
+collision_layer = 4
+input_ray_pickable = false
+
+[node name="FarRange" type="CollisionShape3D" parent="Player/CharacterBody3D/PerceptionController/FarArea"]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+shape = SubResource("CylinderShape3D_jwgtk")
+
+[node name="Timer" type="Timer" parent="Player/CharacterBody3D/PerceptionController"]
+autostart = true
+
+[node name="TargetController" type="Node3D" parent="Player/CharacterBody3D"]
+script = ExtResource("7_nohn5")
+
+[node name="AttackController" type="Node3D" parent="Player/CharacterBody3D"]
+script = ExtResource("8_duky3")
+
+[node name="CooldownTimer" type="Timer" parent="Player/CharacterBody3D/AttackController"]
+wait_time = 2.5
+one_shot = true
+
+[node name="InventoryController" type="Node3D" parent="Player/CharacterBody3D"]
+script = ExtResource("9_o744h")
+
+[node name="CameraController" type="Node3D" parent="Player" groups=["CameraController"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+script = ExtResource("10_3nacf")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Player/CameraController"]
+transform = Transform3D(1, 0, 0, 0, 0.98834, 0.152261, 0, -0.152261, 0.98834, 0, 0, 0)
+spring_length = 5.0
+
+[node name="Camera3D" type="Camera3D" parent="Player/CameraController/SpringArm3D" groups=["Camera"]]
+transform = Transform3D(1, 0, 0, 0, 0.922619, 0.385713, 0, -0.385713, 0.922619, 0, 2.8, 3.8)
+
+[node name="PlayerLook" type="Node3D" parent="Player/CameraController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.34595, 3.32936)
+
+[node name="LookTarget" type="MeshInstance3D" parent="Player/CameraController/PlayerLook" groups=["LookTarget"]]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, -3.33054, -10.8121)
+visible = false
+mesh = SubResource("SphereMesh_4sea2")
+
+[node name="UI" type="CanvasLayer" parent="Player/CameraController"]
+
+[node name="TargetUIPanel" type="PanelContainer" parent="Player/CameraController/UI"]
+custom_minimum_size = Vector2(300, 100)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 15.0
+offset_right = 150.0
+offset_bottom = 165.0
+grow_horizontal = 2
+script = ExtResource("11_dn8ej")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Player/CameraController/UI/TargetUIPanel"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="TargetName" type="Label" parent="Player/CameraController/UI/TargetUIPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Target"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Health" type="Label" parent="Player/CameraController/UI/TargetUIPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Health
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InventoryUIPanel" type="PanelContainer" parent="Player/CameraController/UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -260.0
+offset_top = 600.0
+offset_right = -20.0
+offset_bottom = 920.0
+grow_horizontal = 0
+script = ExtResource("12_v0crv")
+
+[node name="GridContainer" type="GridContainer" parent="Player/CameraController/UI/InventoryUIPanel"]
+layout_mode = 2
+theme_override_constants/h_separation = 7
+theme_override_constants/v_separation = 3
+columns = 3
+script = ExtResource("13_umqxf")
+
+[node name="TooltipPanel" type="Panel" parent="Player/CameraController/UI"]
+visible = false
+offset_left = 1020.0
+offset_top = 509.0
+offset_right = 1260.0
+offset_bottom = 589.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Player/CameraController/UI/TooltipPanel"]
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 80.0
+
+[node name="ItemName" type="Label" parent="Player/CameraController/UI/TooltipPanel/VBoxContainer"]
+layout_mode = 2
+text = "Object Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="Label" parent="Player/CameraController/UI/TooltipPanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_direction = 1
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Object Desc"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="body_entered" from="Player/CharacterBody3D/PerceptionController/CloseArea" to="Player/CharacterBody3D/TargetController" method="AddEntityToCloseList" flags=18]
+[connection signal="body_exited" from="Player/CharacterBody3D/PerceptionController/CloseArea" to="Player/CharacterBody3D/TargetController" method="RemoveEntityFromCloseList" flags=18]
+[connection signal="body_entered" from="Player/CharacterBody3D/PerceptionController/FarArea" to="Player/CharacterBody3D/TargetController" method="AddEntityToFarList" flags=18]
+[connection signal="body_exited" from="Player/CharacterBody3D/PerceptionController/FarArea" to="Player/CharacterBody3D/TargetController" method="RemoveEntityFromFarList" flags=18]
+[connection signal="ClickedName" from="Player/CharacterBody3D/TargetController" to="Player/CameraController/UI/TargetUIPanel" method="ShowTargetNameOnUI"]
+[connection signal="ClickedTarget" from="Player/CharacterBody3D/TargetController" to="Player/CharacterBody3D" method="OnTargetClicked"]
+[connection signal="ClickedTargetNoMovement" from="Player/CharacterBody3D/TargetController" to="Player/CharacterBody3D" method="HandleLooking"]
+[connection signal="HideFarTarget" from="Player/CharacterBody3D/TargetController" to="Player/CameraController/UI/TargetUIPanel" method="HideTargetUI"]
+[connection signal="HidePickableTarget" from="Player/CharacterBody3D/TargetController" to="Player/CameraController/UI/TargetUIPanel" method="HideTargetUI"]
+[connection signal="PickableInventoryTag" from="Player/CharacterBody3D/TargetController" to="Player/CharacterBody3D/InventoryController" method="AddTag"]
+[connection signal="ReturnTargetHealth" from="Player/CharacterBody3D/TargetController" to="Player/CameraController/UI/TargetUIPanel" method="ShowTargetHealthInUI"]
+[connection signal="Attack" from="Player/CharacterBody3D/AttackController" to="Player/CharacterBody3D/TargetController" method="SetAttackPower" flags=18]
+[connection signal="Cooldown" from="Player/CharacterBody3D/AttackController" to="Player/CharacterBody3D/TargetController" method="HandleAutoAttack" flags=18]
+[connection signal="timeout" from="Player/CharacterBody3D/AttackController/CooldownTimer" to="Player/CharacterBody3D/AttackController" method="HandleReadyToAttackEmit" flags=18]
+[connection signal="NewItemAdded" from="Player/CharacterBody3D/InventoryController" to="Player/CameraController/UI/InventoryUIPanel" method="CreateInventoryButton"]

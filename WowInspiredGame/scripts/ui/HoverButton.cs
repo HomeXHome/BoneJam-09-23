@@ -45,8 +45,7 @@ public partial class HoverButton : TextureButton
 
         _tooltipLabelName.Text = TooltipLabelName;
         _tooltipLabelDescription.Text = TooltipLabelDescription;
-        _tooltipPanel.Visible = true;
-    }
+        _tooltipPanel.Visible = true;     }
 
     private void _OnMouseExited() {
         Modulate = _originalModulate;

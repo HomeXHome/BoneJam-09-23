@@ -125,4 +125,7 @@ public partial class CharacterController : CharacterBody3D
         _targetPosition = targetPosition;
     }
 
+    public void LoadPlayerPosition(Vector3 position) {
+        GlobalPosition = position;
+    }
 }

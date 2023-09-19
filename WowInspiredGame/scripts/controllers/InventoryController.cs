@@ -8,7 +8,9 @@ public partial class InventoryController : Node3D
 
 	[Signal]
 	public delegate void NewItemAddedEventHandler(Tag tag);
-	public override void _Ready()
+    [Signal]
+    public delegate void LoadItemsEventHandler();
+    public override void _Ready()
 	{
 
 	}
@@ -24,4 +26,11 @@ public partial class InventoryController : Node3D
 			EmitSignal(nameof(NewItemAdded), tag);
 		}
 	}
+
+	public void LoadGameInventoryUpdate(SaveModel saveModel) {
+		InventoryList = saveModel.InventoryList;
+		foreach (Tag tag in InventoryList) {
+            EmitSignal(nameof(LoadItems));
+        }
+    }
 }

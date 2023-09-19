@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://b42jdj45dneou"]
+[gd_scene load_steps=29 format=3 uid="uid://b42jdj45dneou"]
 
 [ext_resource type="PackedScene" uid="uid://bryk51xxdp3te" path="res://scenes/levels/map_imports/0.tscn" id="1_33rhq"]
 [ext_resource type="Shader" path="res://shaders/map_0.gdshader" id="1_xunlj"]
@@ -11,7 +11,9 @@
 [ext_resource type="Script" path="res://scripts/controllers/AttackController.cs" id="8_o01ge"]
 [ext_resource type="Script" path="res://scripts/controllers/InventoryController.cs" id="9_4ao3u"]
 [ext_resource type="Script" path="res://scripts/controllers/CameraController.cs" id="10_3ugt0"]
+[ext_resource type="Script" path="res://scripts/controllers/SaveController.cs" id="11_725pg"]
 [ext_resource type="Script" path="res://scripts/ui/TargetInfoUI.cs" id="11_sxaun"]
+[ext_resource type="Script" path="res://scripts/controllers/LoadController.cs" id="12_f36nf"]
 [ext_resource type="Script" path="res://scripts/ui/InventoryUIPanel.cs" id="12_hhogu"]
 [ext_resource type="Script" path="res://scripts/ui/InventoryContainer.cs" id="13_q1wpa"]
 
@@ -137,6 +139,21 @@ one_shot = true
 
 [node name="InventoryController" type="Node3D" parent="Player/CharacterBody3D"]
 script = ExtResource("9_4ao3u")
+
+[node name="SaveController" type="Node3D" parent="Player/CharacterBody3D"]
+script = ExtResource("11_725pg")
+
+[node name="Timer" type="Timer" parent="Player/CharacterBody3D/SaveController"]
+wait_time = 5.0
+autostart = true
+
+[node name="LoadController" type="Node3D" parent="Player/CharacterBody3D"]
+script = ExtResource("12_f36nf")
+
+[node name="Timer" type="Timer" parent="Player/CharacterBody3D/LoadController"]
+wait_time = 3.0
+one_shot = true
+autostart = true
 
 [node name="CameraController" type="Node3D" parent="Player" groups=["CameraController"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
@@ -268,4 +285,9 @@ Health = 55
 [connection signal="Attack" from="Player/CharacterBody3D/AttackController" to="Player/CharacterBody3D/TargetController" method="SetAttackPower" flags=18]
 [connection signal="Cooldown" from="Player/CharacterBody3D/AttackController" to="Player/CharacterBody3D/TargetController" method="HandleAutoAttack" flags=18]
 [connection signal="timeout" from="Player/CharacterBody3D/AttackController/CooldownTimer" to="Player/CharacterBody3D/AttackController" method="HandleReadyToAttackEmit" flags=18]
+[connection signal="LoadItems" from="Player/CharacterBody3D/InventoryController" to="Player/CameraController/UI/InventoryUIPanel" method="UpdateInventoryList"]
 [connection signal="NewItemAdded" from="Player/CharacterBody3D/InventoryController" to="Player/CameraController/UI/InventoryUIPanel" method="CreateInventoryButton"]
+[connection signal="timeout" from="Player/CharacterBody3D/SaveController/Timer" to="Player/CharacterBody3D/SaveController" method="SaveGame"]
+[connection signal="LoadGameInventory" from="Player/CharacterBody3D/LoadController" to="Player/CharacterBody3D/InventoryController" method="LoadGameInventoryUpdate"]
+[connection signal="LoadGamePosition" from="Player/CharacterBody3D/LoadController" to="Player/CharacterBody3D" method="LoadPlayerPosition"]
+[connection signal="timeout" from="Player/CharacterBody3D/LoadController/Timer" to="Player/CharacterBody3D/LoadController" method="LoadGame"]

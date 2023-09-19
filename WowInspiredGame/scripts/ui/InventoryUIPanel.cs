@@ -24,12 +24,19 @@ public partial class InventoryUIPanel : PanelContainer
 			_gridContainer.AddChild(button);
         }
 	}
+    public void UpdateInventoryList() {
+        GetInventoryList();
+        foreach (var item in _inventoryController.InventoryList) {
+            CreateInventoryButton(item);
+        }
+    }
 
-	public void CreateInventoryButton(Tag tag) {
+    public void CreateInventoryButton(Tag tag) {
         var button = new TextureButton();
 		button.TextureNormal = tag.Sprite.Texture;
 		button.SetMeta("LabelName", tag.ItemName);
         button.SetMeta("LabelDescription", tag.Description);
+        _gridContainer ??= GetNode<GridContainer>("GridContainer"); // Problem with emitting signal on load and _ready of this object
         _gridContainer.AddChild(button);
     }
 

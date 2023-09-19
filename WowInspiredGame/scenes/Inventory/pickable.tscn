@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://2i23jvvc3kqd"]
+
+[ext_resource type="Script" path="res://scripts/controllers/ClickableObjectController.cs" id="1_ggo5o"]
+[ext_resource type="Script" path="res://scripts/npc/HealthController.cs" id="2_btw14"]
+[ext_resource type="Script" path="res://scripts/ui/Tag.cs" id="3_qtuhc"]
+[ext_resource type="Texture2D" uid="uid://ceya3c0y1b2a6" path="res://textures/test_textures/test0.png" id="4_jy6k7"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_m6dk0"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_4n5o7"]
+
+[node name="Pickable" type="StaticBody3D" groups=["Interactable", "Pickable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7953, 1.0899, 3.72839)
+collision_layer = 7
+script = ExtResource("1_ggo5o")
+ObjectName = "Pickable Orb"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("SphereShape3D_m6dk0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_4n5o7")
+skeleton = NodePath("../CollisionShape3D")
+
+[node name="HealthController" type="Node3D" parent="."]
+script = ExtResource("2_btw14")
+Health = 1
+
+[node name="Tag" type="Node3D" parent="."]
+script = ExtResource("3_qtuhc")
+ItemName = "Pickable Orb"
+Description = "This is a test orb"
+
+[node name="Sprite2D" type="Sprite2D" parent="Tag"]
+position = Vector2(-1202, 72)
+texture = ExtResource("4_jy6k7")

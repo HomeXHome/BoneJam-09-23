@@ -4,13 +4,9 @@ using System.Collections.Generic;
 
 public partial class InventoryUIPanel : PanelContainer
 {
-	private InventoryController _inventoryController;
 	private GridContainer _gridContainer;
     public override void _Ready()
 	{
-        // IDK for now how to do it better, it's for TODO list
-        GetInventoryList();
-
         _gridContainer = GetNode<GridContainer>("GridContainer");
     }
 
@@ -18,12 +14,6 @@ public partial class InventoryUIPanel : PanelContainer
 	{
 	}
 
-	public void UpdateInventoryList(TextureButton button) {
-        GetInventoryList();
-        foreach (var item in _inventoryController.InventoryList) {
-			_gridContainer.AddChild(button);
-        }
-	}
 
 	public void CreateInventoryButton(Tag tag) {
         var button = new TextureButton();
@@ -33,10 +23,27 @@ public partial class InventoryUIPanel : PanelContainer
         _gridContainer.AddChild(button);
     }
 
-	public void GetInventoryList() {
-        _inventoryController = GetParent().GetParent()
+	public List<Tag> GetInventoryList() {
+        return GetParent().GetParent()
                                   .GetParent()
                                   .GetChild(0)
-                                  .GetNode<InventoryController>("InventoryController");
+                                  .GetNode<InventoryController>("InventoryController")
+                                  .InventoryList;
+    }
+
+    public void RemoveAllButtons() {
+        var btnArray = _gridContainer.GetChildren();
+        foreach (var btn in btnArray) {
+            btn.QueueFree();
+        }
+    }
+
+    public void LoadAllButtons() {
+        _gridContainer ??= GetNode<GridContainer>("GridContainer");
+        RemoveAllButtons();
+        List<Tag> buttons = GetInventoryList();
+        foreach (Tag btn in buttons) {
+            CreateInventoryButton(btn);
+        }
     }
 }

@@ -9,5 +9,7 @@ public partial class Tag : Node3D
 
     public override void _Ready() {
         Sprite = GetNode<Sprite2D>("Sprite2D");
+        this.AddToGroup("Persist");
     }
+
 }

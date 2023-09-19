@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://b42jdj45dneou"]
+[gd_scene load_steps=32 format=3 uid="uid://b42jdj45dneou"]
 
 [ext_resource type="PackedScene" uid="uid://bryk51xxdp3te" path="res://scenes/levels/map_imports/0.tscn" id="1_33rhq"]
 [ext_resource type="Shader" path="res://shaders/map_0.gdshader" id="1_xunlj"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/ui/Tag.cs" id="4_xoron"]
 [ext_resource type="Texture2D" uid="uid://ceya3c0y1b2a6" path="res://textures/test_textures/test0.png" id="5_sj4le"]
 [ext_resource type="Script" path="res://scripts/controllers/CharacterController.cs" id="6_6jwk7"]
+[ext_resource type="Texture2D" uid="uid://klyiyhw0h2qv" path="res://textures/test_textures/test1.png" id="7_88hau"]
 [ext_resource type="Script" path="res://scripts/controllers/TargetController.cs" id="7_lxncn"]
 [ext_resource type="Script" path="res://scripts/controllers/AttackController.cs" id="8_o01ge"]
 [ext_resource type="Script" path="res://scripts/controllers/InventoryController.cs" id="9_4ao3u"]
@@ -14,6 +15,8 @@
 [ext_resource type="Script" path="res://scripts/ui/TargetInfoUI.cs" id="11_sxaun"]
 [ext_resource type="Script" path="res://scripts/ui/InventoryUIPanel.cs" id="12_hhogu"]
 [ext_resource type="Script" path="res://scripts/ui/InventoryContainer.cs" id="13_q1wpa"]
+[ext_resource type="Script" path="res://scripts/controllers/LoadController.cs" id="15_jgo0t"]
+[ext_resource type="Script" path="res://scripts/controllers/SaveController.cs" id="16_altn0"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_38gc7"]
 shader = ExtResource("1_xunlj")
@@ -29,6 +32,10 @@ sky = SubResource("Sky_chjgk")
 [sub_resource type="SphereShape3D" id="SphereShape3D_m6dk0"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_4n5o7"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_desas"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_oej05"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_d7155"]
 
@@ -70,14 +77,43 @@ skeleton = NodePath("../CollisionShape3D")
 script = ExtResource("3_xqf5y")
 Health = 1
 
-[node name="Tag" type="Node3D" parent="Pickable"]
+[node name="Tag" type="Node3D" parent="Pickable" node_paths=PackedStringArray("Sprite")]
 script = ExtResource("4_xoron")
 ItemName = "Pickable Orb"
 Description = "This is a test orb"
+Sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="Pickable/Tag"]
 position = Vector2(-1202, 72)
 texture = ExtResource("5_sj4le")
+
+[node name="Pickable3" type="StaticBody3D" parent="." groups=["Interactable", "Pickable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.1111, 1.0899, 0.448909)
+collision_layer = 7
+script = ExtResource("2_l86fw")
+ObjectName = "Pickable Orb11"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pickable3"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("SphereShape3D_desas")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pickable3"]
+mesh = SubResource("SphereMesh_oej05")
+skeleton = NodePath("../CollisionShape3D")
+
+[node name="HealthController" type="Node3D" parent="Pickable3"]
+script = ExtResource("3_xqf5y")
+Health = 1
+
+[node name="Tag" type="Node3D" parent="Pickable3" node_paths=PackedStringArray("Sprite")]
+script = ExtResource("4_xoron")
+ItemName = "Pickable Orb11"
+Description = "This is a test orb"
+Sprite = NodePath("Sprite2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="Pickable3/Tag"]
+position = Vector2(-1202, 72)
+texture = ExtResource("7_88hau")
 
 [node name="Player" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0259609, 0.974423, 0.00275305)
@@ -236,6 +272,27 @@ text = "Object Desc"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Button" type="Button" parent="Player/CameraController/UI"]
+offset_left = 40.0
+offset_top = 496.0
+offset_right = 184.0
+offset_bottom = 576.0
+text = "save"
+
+[node name="Button3" type="Button" parent="Player/CameraController/UI"]
+offset_left = 462.0
+offset_top = 498.0
+offset_right = 606.0
+offset_bottom = 578.0
+text = "load"
+
+[node name="Button2" type="Button" parent="Player/CameraController/UI"]
+offset_left = 233.0
+offset_top = 494.0
+offset_right = 377.0
+offset_bottom = 574.0
+text = "remove"
+
 [node name="Enemy4" type="StaticBody3D" parent="." groups=["Interactable"]]
 transform = Transform3D(-1.97427, 0.207669, -0.243149, 0, 1.52081, 1.2989, 0.319762, 1.28219, -1.50125, 0.603411, 0.528748, -14.5422)
 collision_layer = 7
@@ -254,6 +311,12 @@ mesh = SubResource("BoxMesh_o58fu")
 script = ExtResource("3_xqf5y")
 Health = 55
 
+[node name="LoadController" type="Node" parent="."]
+script = ExtResource("15_jgo0t")
+
+[node name="SaveController" type="Node" parent="."]
+script = ExtResource("16_altn0")
+
 [connection signal="body_entered" from="Player/CharacterBody3D/PerceptionController/CloseArea" to="Player/CharacterBody3D/TargetController" method="AddEntityToCloseList" flags=18]
 [connection signal="body_exited" from="Player/CharacterBody3D/PerceptionController/CloseArea" to="Player/CharacterBody3D/TargetController" method="RemoveEntityFromCloseList" flags=18]
 [connection signal="body_entered" from="Player/CharacterBody3D/PerceptionController/FarArea" to="Player/CharacterBody3D/TargetController" method="AddEntityToFarList" flags=18]
@@ -269,3 +332,6 @@ Health = 55
 [connection signal="Cooldown" from="Player/CharacterBody3D/AttackController" to="Player/CharacterBody3D/TargetController" method="HandleAutoAttack" flags=18]
 [connection signal="timeout" from="Player/CharacterBody3D/AttackController/CooldownTimer" to="Player/CharacterBody3D/AttackController" method="HandleReadyToAttackEmit" flags=18]
 [connection signal="NewItemAdded" from="Player/CharacterBody3D/InventoryController" to="Player/CameraController/UI/InventoryUIPanel" method="CreateInventoryButton"]
+[connection signal="pressed" from="Player/CameraController/UI/Button" to="SaveController" method="SaveGame"]
+[connection signal="pressed" from="Player/CameraController/UI/Button3" to="LoadController" method="LoadGame"]
+[connection signal="pressed" from="Player/CameraController/UI/Button2" to="Player/CameraController/UI/InventoryUIPanel" method="RemoveAllButtons"]

@@ -14,4 +14,11 @@ public partial class InventoryContainer : GridContainer
 	public void UpdateChildren(Node node) {
 		node.SetScript(ResourceLoader.Load("res://scripts/ui/HoverButton.cs"));
 	}
+
+	public void ResetNodeChildren() {
+		var nodes = GetChildren();
+		foreach (var node in nodes) {
+			node.QueueFree();
+		}
+	}
 }

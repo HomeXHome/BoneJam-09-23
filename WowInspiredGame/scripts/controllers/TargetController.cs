@@ -22,7 +22,7 @@ public partial class TargetController : Node3D
     [Signal]
     public delegate void ReturnTargetHealthEventHandler(int[] health);
     [Signal]
-    public delegate void PickableInventoryTagEventHandler(Tag tag);
+    public delegate void PickableInventoryTagEventHandler(string name, string desc, string path);
 
     private Node3D _playerTarget = null;
     private AttackController _attackController;
@@ -107,7 +107,7 @@ public partial class TargetController : Node3D
         if (_playerTarget.IsInGroup("Pickable")) {
             //TODO Pick
             var v = _playerTarget.GetNode<Tag>("Tag");
-            EmitSignal(nameof(PickableInventoryTag),_playerTarget.GetNode<Tag>("Tag"));
+            EmitSignal(nameof(PickableInventoryTag),v.ItemName,v.Description,v.PathToSprite);
             PickUpAndRemoveObject();
             return;
         }

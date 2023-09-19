@@ -15,21 +15,14 @@ public partial class InventoryUIPanel : PanelContainer
 	}
 
 
-	public void CreateInventoryButton(Tag tag) {
+	public void CreateInventoryButton(string name, string desc, string path) {
         var button = new TextureButton();
-		button.TextureNormal = tag.Sprite.Texture;
-		button.SetMeta("LabelName", tag.ItemName);
-        button.SetMeta("LabelDescription", tag.Description);
+		button.TextureNormal = (Texture2D)ResourceLoader.Load(path);
+		button.SetMeta("LabelName", name);
+        button.SetMeta("LabelDescription", desc);
         _gridContainer.AddChild(button);
     }
 
-	public List<Tag> GetInventoryList() {
-        return GetParent().GetParent()
-                                  .GetParent()
-                                  .GetChild(0)
-                                  .GetNode<InventoryController>("InventoryController")
-                                  .InventoryList;
-    }
 
     public void RemoveAllButtons() {
         var btnArray = _gridContainer.GetChildren();
@@ -38,12 +31,4 @@ public partial class InventoryUIPanel : PanelContainer
         }
     }
 
-    public void LoadAllButtons() {
-        _gridContainer ??= GetNode<GridContainer>("GridContainer");
-        RemoveAllButtons();
-        List<Tag> buttons = GetInventoryList();
-        foreach (Tag btn in buttons) {
-            CreateInventoryButton(btn);
-        }
-    }
 }

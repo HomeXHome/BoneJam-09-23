@@ -1,13 +1,11 @@
-[gd_scene load_steps=32 format=3 uid="uid://b42jdj45dneou"]
+[gd_scene load_steps=30 format=3 uid="uid://b42jdj45dneou"]
 
 [ext_resource type="PackedScene" uid="uid://bryk51xxdp3te" path="res://scenes/levels/map_imports/0.tscn" id="1_33rhq"]
 [ext_resource type="Shader" path="res://shaders/map_0.gdshader" id="1_xunlj"]
 [ext_resource type="Script" path="res://scripts/controllers/ClickableObjectController.cs" id="2_l86fw"]
 [ext_resource type="Script" path="res://scripts/npc/HealthController.cs" id="3_xqf5y"]
 [ext_resource type="Script" path="res://scripts/ui/Tag.cs" id="4_xoron"]
-[ext_resource type="Texture2D" uid="uid://ceya3c0y1b2a6" path="res://textures/test_textures/test0.png" id="5_sj4le"]
 [ext_resource type="Script" path="res://scripts/controllers/CharacterController.cs" id="6_6jwk7"]
-[ext_resource type="Texture2D" uid="uid://klyiyhw0h2qv" path="res://textures/test_textures/test1.png" id="7_88hau"]
 [ext_resource type="Script" path="res://scripts/controllers/TargetController.cs" id="7_lxncn"]
 [ext_resource type="Script" path="res://scripts/controllers/AttackController.cs" id="8_o01ge"]
 [ext_resource type="Script" path="res://scripts/controllers/InventoryController.cs" id="9_4ao3u"]
@@ -77,15 +75,11 @@ skeleton = NodePath("../CollisionShape3D")
 script = ExtResource("3_xqf5y")
 Health = 1
 
-[node name="Tag" type="Node3D" parent="Pickable" node_paths=PackedStringArray("Sprite")]
+[node name="Tag" type="Node3D" parent="Pickable"]
 script = ExtResource("4_xoron")
 ItemName = "Pickable Orb"
 Description = "This is a test orb"
-Sprite = NodePath("Sprite2D")
-
-[node name="Sprite2D" type="Sprite2D" parent="Pickable/Tag"]
-position = Vector2(-1202, 72)
-texture = ExtResource("5_sj4le")
+PathToSprite = "res://textures/test_textures/test0.png"
 
 [node name="Pickable3" type="StaticBody3D" parent="." groups=["Interactable", "Pickable"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.1111, 1.0899, 0.448909)
@@ -105,15 +99,11 @@ skeleton = NodePath("../CollisionShape3D")
 script = ExtResource("3_xqf5y")
 Health = 1
 
-[node name="Tag" type="Node3D" parent="Pickable3" node_paths=PackedStringArray("Sprite")]
+[node name="Tag" type="Node3D" parent="Pickable3"]
 script = ExtResource("4_xoron")
 ItemName = "Pickable Orb11"
 Description = "This is a test orb"
-Sprite = NodePath("Sprite2D")
-
-[node name="Sprite2D" type="Sprite2D" parent="Pickable3/Tag"]
-position = Vector2(-1202, 72)
-texture = ExtResource("7_88hau")
+PathToSprite = "res://textures/test_textures/test1.png"
 
 [node name="Player" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0259609, 0.974423, 0.00275305)
@@ -334,4 +324,7 @@ script = ExtResource("16_altn0")
 [connection signal="NewItemAdded" from="Player/CharacterBody3D/InventoryController" to="Player/CameraController/UI/InventoryUIPanel" method="CreateInventoryButton"]
 [connection signal="pressed" from="Player/CameraController/UI/Button" to="SaveController" method="SaveGame"]
 [connection signal="pressed" from="Player/CameraController/UI/Button3" to="LoadController" method="LoadGame"]
-[connection signal="pressed" from="Player/CameraController/UI/Button2" to="Player/CameraController/UI/InventoryUIPanel" method="RemoveAllButtons"]
+[connection signal="pressed" from="Player/CameraController/UI/Button2" to="Player/CameraController/UI/InventoryUIPanel/GridContainer" method="ResetNodeChildren"]
+[connection signal="LoadGameInventory" from="LoadController" to="Player/CharacterBody3D/InventoryController" method="ResetInventory"]
+[connection signal="LoadGameInventory" from="LoadController" to="Player/CameraController/UI/InventoryUIPanel/GridContainer" method="ResetNodeChildren"]
+[connection signal="LoadItem" from="LoadController" to="Player/CharacterBody3D/InventoryController" method="AddTag"]

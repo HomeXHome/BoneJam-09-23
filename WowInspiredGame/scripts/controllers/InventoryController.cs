@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 public partial class InventoryController : Node3D
 {
-	public List<Tag> InventoryList = new();
+	public Dictionary<string,List<string>> InventoryDict = new();
 	public List<string> InventoryName = new();
 
 	[Signal]
-	public delegate void NewItemAddedEventHandler(Tag tag);
+	public delegate void NewItemAddedEventHandler(string name, string desc, string path);
 	public override void _Ready()
 	{
 
@@ -19,24 +19,34 @@ public partial class InventoryController : Node3D
 
 	}
 
-	public void AddTag(Tag tag) {
-		if (!InventoryName.Contains(tag.ItemName)) {
-			InventoryName.Add(tag.ItemName);
-			InventoryList.Add(tag);
-			EmitSignal(nameof(NewItemAdded), tag);
+	public void AddTag(string name, string desc, string path) {
+		if (!InventoryName.Contains(name)) {
+			List<string> list = new List<string>() {
+				name,desc,path
+			};
+			InventoryDict.Add(name,list);
+            EmitSignal(nameof(NewItemAdded), name,desc,path);
 		}
 	}
 
-	public List<Tag> ReturnInventoryList() {
-		return InventoryList;
+	public Dictionary<string,List<string>> ReturnInventoryList() {
+		return InventoryDict;
 	}
 
-	public void SetInventoryList(List<Tag> _inventoryList) {
-		InventoryList.Clear();
-		InventoryList = _inventoryList;
-		foreach (Tag tag in InventoryList) {
-			AddTag(tag);
-        }
+	public void SetInventoryList(Dictionary<string, List<string>> _inventoryList) {
+        InventoryDict.Clear();
+        InventoryDict = _inventoryList;
+        foreach (var kvp in InventoryDict) {
+            string name = kvp.Key; 
+            List<string> values = kvp.Value;
 
+            AddTag(name, values[0], values[1]);
+        }
     }
+
+	public void ResetInventory() {
+        InventoryDict.Clear();
+        InventoryName.Clear();
+    }
+
 }

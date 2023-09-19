@@ -12,7 +12,6 @@ public partial class SaveController : Node
 
     private Vector3 _playerPos;
     private InventoryController _inventoryController;
-    private List<Tag> _tags;
 
     public void SaveGame() {
         CheckIfSaveExists();
@@ -21,11 +20,10 @@ public partial class SaveController : Node
             .GetNode<Node3D>("Player")
             .GetNode<CharacterBody3D>("CharacterBody3D")
             .GetNode<InventoryController>("InventoryController");
-        _tags = _inventoryController.ReturnInventoryList();
-        foreach (Tag tag in _tags) {
-            using StreamWriter sw = new(Path.Combine(appDomain, _saveFolder, saveFileName));
-            sw.WriteLine(tag);
-        }
+        var _tags = _inventoryController.ReturnInventoryList();
+        using StreamWriter sw = new(Path.Combine(appDomain, _saveFolder, saveFileName));
+        JsonSerializer serializer = new JsonSerializer();
+        serializer.Serialize(sw, _tags);
     }
 
     public void CheckIfSaveExists() {

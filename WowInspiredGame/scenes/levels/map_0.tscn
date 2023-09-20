@@ -81,6 +81,30 @@ ItemName = "Pickable Orb"
 Description = "This is a test orb"
 PathToSprite = "res://textures/test_textures/test0.png"
 
+[node name="Pickable2" type="StaticBody3D" parent="." groups=["Interactable", "Pickable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7953, 1.0899, 10.2057)
+collision_layer = 7
+script = ExtResource("2_l86fw")
+ObjectName = "Pickable Orb"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pickable2"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("SphereShape3D_m6dk0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pickable2"]
+mesh = SubResource("SphereMesh_4n5o7")
+skeleton = NodePath("../CollisionShape3D")
+
+[node name="HealthController" type="Node3D" parent="Pickable2"]
+script = ExtResource("3_xqf5y")
+Health = 1
+
+[node name="Tag" type="Node3D" parent="Pickable2"]
+script = ExtResource("4_xoron")
+ItemName = "Pickable"
+Description = "This is a test pickable"
+PathToSprite = "res://textures/test_textures/test0.png"
+
 [node name="Pickable3" type="StaticBody3D" parent="." groups=["Interactable", "Pickable"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.1111, 1.0899, 0.448909)
 collision_layer = 7
@@ -262,27 +286,6 @@ text = "Object Desc"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="Player/CameraController/UI"]
-offset_left = 40.0
-offset_top = 496.0
-offset_right = 184.0
-offset_bottom = 576.0
-text = "save"
-
-[node name="Button3" type="Button" parent="Player/CameraController/UI"]
-offset_left = 462.0
-offset_top = 498.0
-offset_right = 606.0
-offset_bottom = 578.0
-text = "load"
-
-[node name="Button2" type="Button" parent="Player/CameraController/UI"]
-offset_left = 233.0
-offset_top = 494.0
-offset_right = 377.0
-offset_bottom = 574.0
-text = "remove"
-
 [node name="Enemy4" type="StaticBody3D" parent="." groups=["Interactable"]]
 transform = Transform3D(-1.97427, 0.207669, -0.243149, 0, 1.52081, 1.2989, 0.319762, 1.28219, -1.50125, 0.603411, 0.528748, -14.5422)
 collision_layer = 7
@@ -307,6 +310,10 @@ script = ExtResource("15_jgo0t")
 [node name="SaveController" type="Node" parent="."]
 script = ExtResource("16_altn0")
 
+[node name="Timer" type="Timer" parent="SaveController"]
+wait_time = 10.0
+autostart = true
+
 [connection signal="body_entered" from="Player/CharacterBody3D/PerceptionController/CloseArea" to="Player/CharacterBody3D/TargetController" method="AddEntityToCloseList" flags=18]
 [connection signal="body_exited" from="Player/CharacterBody3D/PerceptionController/CloseArea" to="Player/CharacterBody3D/TargetController" method="RemoveEntityFromCloseList" flags=18]
 [connection signal="body_entered" from="Player/CharacterBody3D/PerceptionController/FarArea" to="Player/CharacterBody3D/TargetController" method="AddEntityToFarList" flags=18]
@@ -322,9 +329,8 @@ script = ExtResource("16_altn0")
 [connection signal="Cooldown" from="Player/CharacterBody3D/AttackController" to="Player/CharacterBody3D/TargetController" method="HandleAutoAttack" flags=18]
 [connection signal="timeout" from="Player/CharacterBody3D/AttackController/CooldownTimer" to="Player/CharacterBody3D/AttackController" method="HandleReadyToAttackEmit" flags=18]
 [connection signal="NewItemAdded" from="Player/CharacterBody3D/InventoryController" to="Player/CameraController/UI/InventoryUIPanel" method="CreateInventoryButton"]
-[connection signal="pressed" from="Player/CameraController/UI/Button" to="SaveController" method="SaveGame"]
-[connection signal="pressed" from="Player/CameraController/UI/Button3" to="LoadController" method="LoadGame"]
-[connection signal="pressed" from="Player/CameraController/UI/Button2" to="Player/CameraController/UI/InventoryUIPanel/GridContainer" method="ResetNodeChildren"]
 [connection signal="LoadGameInventory" from="LoadController" to="Player/CharacterBody3D/InventoryController" method="ResetInventory"]
-[connection signal="LoadGameInventory" from="LoadController" to="Player/CameraController/UI/InventoryUIPanel/GridContainer" method="ResetNodeChildren"]
-[connection signal="LoadItem" from="LoadController" to="Player/CharacterBody3D/InventoryController" method="AddTag"]
+[connection signal="LoadGameInventory" from="LoadController" to="Player/CameraController/UI/InventoryUIPanel" method="RemoveAllButtons"]
+[connection signal="LoadGamePosition" from="LoadController" to="Player/CharacterBody3D" method="LoadPlayerPosition"]
+[connection signal="LoadItem" from="LoadController" to="Player/CameraController/UI/InventoryUIPanel" method="CreateInventoryButton"]
+[connection signal="timeout" from="SaveController/Timer" to="SaveController" method="SaveGame"]

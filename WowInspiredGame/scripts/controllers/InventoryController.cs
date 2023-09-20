@@ -20,7 +20,7 @@ public partial class InventoryController : Node3D
 	}
 
 	public void AddTag(string name, string desc, string path) {
-		if (!InventoryName.Contains(name)) {
+		if (!InventoryDict.ContainsKey(name)) {
 			List<string> list = new List<string>() {
 				name,desc,path
 			};
@@ -36,13 +36,15 @@ public partial class InventoryController : Node3D
 	public void SetInventoryList(Dictionary<string, List<string>> _inventoryList) {
         InventoryDict.Clear();
         InventoryDict = _inventoryList;
-        foreach (var kvp in InventoryDict) {
-            string name = kvp.Key; 
-            List<string> values = kvp.Value;
+        //foreach (var kvp in InventoryDict) {
+        //    string name = kvp.Key; 
+        //    List<string> values = kvp.Value;
 
-            AddTag(name, values[0], values[1]);
-        }
+        //    AddTag(name, values[0], values[1]);
+        //}
     }
+
+
 
 	public void ResetInventory() {
         InventoryDict.Clear();

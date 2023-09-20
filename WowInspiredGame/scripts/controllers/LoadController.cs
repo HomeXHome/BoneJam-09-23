@@ -12,11 +12,15 @@ public partial class LoadController : Node
     string saveFileName = "saveGameFile.json";
     string combinePath;
     private InventoryController _inventoryController;
+    string saveFilePosName = "saveFilePosFile.json";
+
 
     [Signal]
     public delegate void LoadGameInventoryEventHandler();
     [Signal]
     public delegate void LoadItemEventHandler(string name, string desc, string path);
+    [Signal]
+    public delegate void LoadGamePositionEventHandler(Vector3 position);
 
     public override void _Ready() {
         combinePath = Path.Combine(appDomain, _saveFolder, saveFileName);
@@ -25,6 +29,7 @@ public partial class LoadController : Node
             .GetNode<Node3D>("Player")
             .GetNode<CharacterBody3D>("CharacterBody3D")
             .GetNode<InventoryController>("InventoryController");
+        LoadGame();
     }
 
     public void LoadGame() {
@@ -42,15 +47,18 @@ public partial class LoadController : Node
 
     public void DeserializeSaveFile() {
         var jsonContent = File.ReadAllText(Path.Combine(appDomain, _saveFolder, saveFileName));
+        var jsonContent1 = File.ReadAllText(Path.Combine(appDomain, _saveFolder, saveFilePosName));
+
         var result = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(jsonContent);
+        var resultPos = JsonConvert.DeserializeObject<Vector3>(jsonContent1);
+
+        EmitSignal(nameof(LoadGameInventory));
         foreach (var kvp in result) {
             List<string> values = kvp.Value;
-            EmitSignal(nameof(LoadGameInventory));
             EmitSignal(nameof(LoadItem), values[0], values[1], values[2]);
-            //AddTag(name, values[0], values[1]);
         }
-        //_inventoryController.SetInventoryList(deltaList);
-        //EmitSignal(nameof(LoadGamePosition),save.PlayerPosition);
+        _inventoryController.SetInventoryList(result);
+        EmitSignal(nameof(LoadGamePosition), resultPos);
     }
 
 

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://0olysno83k7d"]
+
+[ext_resource type="PackedScene" uid="uid://cn6j0p0bjmp3t" path="res://import/level_import/map3.glb" id="1_28sls"]
+
+[node name="map3" instance=ExtResource("1_28sls")]
+
+[node name="StaticBody3D" parent="map3" index="0"]
+collision_layer = 31

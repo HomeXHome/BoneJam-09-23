@@ -1,6 +1,6 @@
 [gd_scene load_steps=34 format=3 uid="uid://b42jdj45dneou"]
 
-[ext_resource type="PackedScene" uid="uid://4b5x13jpkwjf" path="res://scenes/levels/map_imports/map_2.tscn" id="1_6ycue"]
+[ext_resource type="PackedScene" uid="uid://0olysno83k7d" path="res://scenes/levels/map_imports/map_3.tscn" id="2_ifra2"]
 [ext_resource type="Script" path="res://scripts/controllers/ClickableObjectController.cs" id="2_l86fw"]
 [ext_resource type="Environment" uid="uid://b0irajbnp4j83" path="res://scenes/environment/map_0.tres" id="2_shrqg"]
 [ext_resource type="Script" path="res://scripts/npc/HealthController.cs" id="3_xqf5y"]
@@ -50,14 +50,14 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [node name="Map0" type="Node3D"]
 
-[node name="map2" parent="." instance=ExtResource("1_6ycue")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 33.5237, 0)
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("2_shrqg")
 
+[node name="map3" parent="." instance=ExtResource("2_ifra2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19, 17, 67)
+
 [node name="Pickable" type="StaticBody3D" parent="." groups=["Interactable", "Pickable"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7953, -6.08745, 3.72839)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7953, -13.84, 3.72839)
 collision_layer = 7
 script = ExtResource("2_l86fw")
 ObjectName = "Pickable Orb"
@@ -81,7 +81,7 @@ Description = "This is a test orb"
 PathToSprite = "res://textures/test_textures/test0.png"
 
 [node name="Pickable2" type="StaticBody3D" parent="." groups=["Interactable", "Pickable"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7953, -6.08745, 10.2057)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7953, -13.84, 10.2057)
 collision_layer = 7
 script = ExtResource("2_l86fw")
 ObjectName = "Pickable Orb"
@@ -105,7 +105,7 @@ Description = "This is a test pickable"
 PathToSprite = "res://textures/test_textures/test0.png"
 
 [node name="Pickable3" type="StaticBody3D" parent="." groups=["Interactable", "Pickable"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.1111, -6.08745, 0.448909)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.1111, -13.84, 0.448909)
 collision_layer = 7
 script = ExtResource("2_l86fw")
 ObjectName = "Pickable Orb11"

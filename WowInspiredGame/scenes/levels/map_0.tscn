@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://b42jdj45dneou"]
+[gd_scene load_steps=36 format=3 uid="uid://b42jdj45dneou"]
 
 [ext_resource type="PackedScene" uid="uid://bryk51xxdp3te" path="res://scenes/levels/map_imports/0.tscn" id="1_33rhq"]
 [ext_resource type="Shader" path="res://shaders/map_0.gdshader" id="1_xunlj"]
@@ -11,14 +11,20 @@
 [ext_resource type="Script" path="res://scripts/controllers/InventoryController.cs" id="9_4ao3u"]
 [ext_resource type="Script" path="res://scripts/controllers/CameraController.cs" id="10_3ugt0"]
 [ext_resource type="Script" path="res://scripts/ui/TargetInfoUI.cs" id="11_sxaun"]
+[ext_resource type="Texture2D" uid="uid://rcbr66lfwrhg" path="res://textures/ui_textures/targetpanel.png" id="12_1im1k"]
 [ext_resource type="Script" path="res://scripts/ui/InventoryUIPanel.cs" id="12_hhogu"]
 [ext_resource type="Script" path="res://scripts/ui/InventoryContainer.cs" id="13_q1wpa"]
+[ext_resource type="Texture2D" uid="uid://dacn3byrapnc4" path="res://textures/ui_textures/inventorypanel.png" id="14_p1iwf"]
+[ext_resource type="Texture2D" uid="uid://byvfx8h4to6nj" path="res://textures/ui_textures/characterpanel.png" id="15_feyl6"]
 [ext_resource type="Script" path="res://scripts/controllers/LoadController.cs" id="15_jgo0t"]
 [ext_resource type="Script" path="res://scripts/controllers/SaveController.cs" id="16_altn0"]
+[ext_resource type="Texture2D" uid="uid://8pn454c00iv5" path="res://textures/ui_textures/skillpanel.png" id="16_e76qt"]
+[ext_resource type="Texture2D" uid="uid://bddv0otgvyqi0" path="res://textures/ui_textures/tooltippanel.png" id="16_ohxic"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_38gc7"]
 shader = ExtResource("1_xunlj")
 shader_parameter/skyColor = Color(0.168627, 0.262745, 0.501961, 1)
+shader_parameter/horizonColor = null
 
 [sub_resource type="Sky" id="Sky_chjgk"]
 sky_material = SubResource("ShaderMaterial_38gc7")
@@ -44,6 +50,9 @@ sky = SubResource("Sky_chjgk")
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_wrpnn"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_0h43r"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pnf5g"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lvsat"]
 
@@ -219,23 +228,30 @@ offset_top = 15.0
 offset_right = 150.0
 offset_bottom = 165.0
 grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_pnf5g")
 script = ExtResource("11_sxaun")
+
+[node name="TextureRect" type="TextureRect" parent="Player/CameraController/UI/TargetUIPanel"]
+layout_mode = 2
+texture = ExtResource("12_1im1k")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Player/CameraController/UI/TargetUIPanel"]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 3
 alignment = 1
 
 [node name="TargetName" type="Label" parent="Player/CameraController/UI/TargetUIPanel/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 20
 text = "Target"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Health" type="Label" parent="Player/CameraController/UI/TargetUIPanel/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 20
 text = "Health
 "
 horizontal_alignment = 1
@@ -245,34 +261,51 @@ vertical_alignment = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -260.0
-offset_top = 600.0
-offset_right = -20.0
-offset_bottom = 920.0
+offset_left = -273.0
+offset_top = 526.0
+offset_right = -33.0
+offset_bottom = 846.0
 grow_horizontal = 0
 script = ExtResource("12_hhogu")
 
-[node name="GridContainer" type="GridContainer" parent="Player/CameraController/UI/InventoryUIPanel"]
+[node name="TextureRect" type="TextureRect" parent="Player/CameraController/UI/InventoryUIPanel"]
 layout_mode = 2
-theme_override_constants/h_separation = 7
+texture = ExtResource("14_p1iwf")
+
+[node name="MarginContainer" type="MarginContainer" parent="Player/CameraController/UI/InventoryUIPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+
+[node name="GridContainer" type="GridContainer" parent="Player/CameraController/UI/InventoryUIPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 3
 columns = 3
 script = ExtResource("13_q1wpa")
 
 [node name="TooltipPanel" type="Panel" parent="Player/CameraController/UI"]
 visible = false
-offset_left = 1020.0
-offset_top = 509.0
-offset_right = 1260.0
-offset_bottom = 589.0
+offset_left = 1007.0
+offset_top = 430.0
+offset_right = 1247.0
+offset_bottom = 510.0
+
+[node name="TextureRect" type="TextureRect" parent="Player/CameraController/UI/TooltipPanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("16_ohxic")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Player/CameraController/UI/TooltipPanel"]
 layout_mode = 0
 offset_right = 240.0
 offset_bottom = 80.0
+theme_override_constants/separation = 0
 
 [node name="ItemName" type="Label" parent="Player/CameraController/UI/TooltipPanel/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 20
 text = "Object Name"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -285,6 +318,25 @@ theme_override_font_sizes/font_size = 15
 text = "Object Desc"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="PlayerTexture" type="TextureRect" parent="Player/CameraController/UI"]
+offset_left = 40.0
+offset_top = 33.0
+offset_right = 340.0
+offset_bottom = 183.0
+texture = ExtResource("15_feyl6")
+
+[node name="SkillsPanel" type="Panel" parent="Player/CameraController/UI"]
+offset_left = 170.0
+offset_top = 850.0
+offset_right = 970.0
+offset_bottom = 940.0
+
+[node name="TextureRect" type="TextureRect" parent="Player/CameraController/UI/SkillsPanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("16_e76qt")
 
 [node name="Enemy4" type="StaticBody3D" parent="." groups=["Interactable"]]
 transform = Transform3D(-1.97427, 0.207669, -0.243149, 0, 1.52081, 1.2989, 0.319762, 1.28219, -1.50125, 0.603411, 0.528748, -14.5422)

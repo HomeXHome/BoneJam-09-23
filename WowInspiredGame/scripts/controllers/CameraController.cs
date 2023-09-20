@@ -14,7 +14,7 @@ public partial class CameraController : Node3D
     private float _positionFromPlayerY = 2f;
     private float _positionFromPlayerZ = 0;
 
-    private float _maxZoom = 10f;
+    private float _maxZoom = 16f;
     private float _minZoom = 2f;
     private float _zoomStep = 0.2f;
     private float _zoomSpeed = 0.8f;

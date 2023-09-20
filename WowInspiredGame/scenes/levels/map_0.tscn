@@ -1,8 +1,8 @@
-[gd_scene load_steps=36 format=3 uid="uid://b42jdj45dneou"]
+[gd_scene load_steps=34 format=3 uid="uid://b42jdj45dneou"]
 
-[ext_resource type="PackedScene" uid="uid://bryk51xxdp3te" path="res://scenes/levels/map_imports/0.tscn" id="1_33rhq"]
-[ext_resource type="Shader" path="res://shaders/map_0.gdshader" id="1_xunlj"]
+[ext_resource type="PackedScene" uid="uid://4b5x13jpkwjf" path="res://scenes/levels/map_imports/map_2.tscn" id="1_6ycue"]
 [ext_resource type="Script" path="res://scripts/controllers/ClickableObjectController.cs" id="2_l86fw"]
+[ext_resource type="Environment" uid="uid://b0irajbnp4j83" path="res://scenes/environment/map_0.tres" id="2_shrqg"]
 [ext_resource type="Script" path="res://scripts/npc/HealthController.cs" id="3_xqf5y"]
 [ext_resource type="Script" path="res://scripts/ui/Tag.cs" id="4_xoron"]
 [ext_resource type="Script" path="res://scripts/controllers/CharacterController.cs" id="6_6jwk7"]
@@ -21,18 +21,6 @@
 [ext_resource type="Texture2D" uid="uid://8pn454c00iv5" path="res://textures/ui_textures/skillpanel.png" id="16_e76qt"]
 [ext_resource type="Texture2D" uid="uid://bddv0otgvyqi0" path="res://textures/ui_textures/tooltippanel.png" id="16_ohxic"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_38gc7"]
-shader = ExtResource("1_xunlj")
-shader_parameter/skyColor = Color(0.168627, 0.262745, 0.501961, 1)
-shader_parameter/horizonColor = null
-
-[sub_resource type="Sky" id="Sky_chjgk"]
-sky_material = SubResource("ShaderMaterial_38gc7")
-
-[sub_resource type="Environment" id="Environment_0j3sl"]
-background_mode = 2
-sky = SubResource("Sky_chjgk")
-
 [sub_resource type="SphereShape3D" id="SphereShape3D_m6dk0"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_4n5o7"]
@@ -49,6 +37,8 @@ sky = SubResource("Sky_chjgk")
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_wrpnn"]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_egdd0"]
+
 [sub_resource type="SphereMesh" id="SphereMesh_0h43r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pnf5g"]
@@ -60,14 +50,14 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [node name="Map0" type="Node3D"]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_0j3sl")
+[node name="map2" parent="." instance=ExtResource("1_6ycue")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 33.5237, 0)
 
-[node name="map0" parent="." instance=ExtResource("1_33rhq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 1)
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("2_shrqg")
 
 [node name="Pickable" type="StaticBody3D" parent="." groups=["Interactable", "Pickable"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7953, 1.0899, 3.72839)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7953, -6.08745, 3.72839)
 collision_layer = 7
 script = ExtResource("2_l86fw")
 ObjectName = "Pickable Orb"
@@ -91,7 +81,7 @@ Description = "This is a test orb"
 PathToSprite = "res://textures/test_textures/test0.png"
 
 [node name="Pickable2" type="StaticBody3D" parent="." groups=["Interactable", "Pickable"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7953, 1.0899, 10.2057)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7953, -6.08745, 10.2057)
 collision_layer = 7
 script = ExtResource("2_l86fw")
 ObjectName = "Pickable Orb"
@@ -115,7 +105,7 @@ Description = "This is a test pickable"
 PathToSprite = "res://textures/test_textures/test0.png"
 
 [node name="Pickable3" type="StaticBody3D" parent="." groups=["Interactable", "Pickable"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.1111, 1.0899, 0.448909)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.1111, -6.08745, 0.448909)
 collision_layer = 7
 script = ExtResource("2_l86fw")
 ObjectName = "Pickable Orb11"
@@ -147,6 +137,7 @@ collision_layer = 16
 collision_mask = 16
 input_ray_pickable = false
 script = ExtResource("6_6jwk7")
+Speed = 12.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player/CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -203,7 +194,9 @@ script = ExtResource("10_3ugt0")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="Player/CameraController"]
 transform = Transform3D(1, 0, 0, 0, 0.98834, 0.152261, 0, -0.152261, 0.98834, 0, 0, 0)
-spring_length = 5.0
+collision_mask = 16
+shape = SubResource("SphereShape3D_egdd0")
+spring_length = 8.0
 
 [node name="Camera3D" type="Camera3D" parent="Player/CameraController/SpringArm3D" groups=["Camera"]]
 transform = Transform3D(1, 0, 0, 0, 0.922619, 0.385713, 0, -0.385713, 0.922619, 0, 2.8, 3.8)

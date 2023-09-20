@@ -8,14 +8,14 @@ public partial class CameraController : Node3D
     [Export]
     public float TopCameraBoundry = -0.8f;
     [Export]
-    public float BottomCameraBoundry = 0f;
+    public float BottomCameraBoundry = 0.8f;
 
     private float _positionFromPlayerX = 0;
     private float _positionFromPlayerY = 2f;
     private float _positionFromPlayerZ = 0;
 
-    private float _maxZoom = 8f;
-    private float _minZoom = 1.6f;
+    private float _maxZoom = 10f;
+    private float _minZoom = 2f;
     private float _zoomStep = 0.2f;
     private float _zoomSpeed = 0.8f;
 

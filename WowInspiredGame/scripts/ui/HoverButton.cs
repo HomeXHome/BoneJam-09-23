@@ -20,11 +20,13 @@ public partial class HoverButton : TextureButton
         _tooltipLabelName = GetParent()
             .GetParent()
             .GetParent()
+            .GetParent()
             .GetNode<Panel>("TooltipPanel")
             .GetNode<VBoxContainer>("VBoxContainer")
             .GetNode<Label>("ItemName");
 
         _tooltipLabelDescription = GetParent()
+            .GetParent()
             .GetParent()
             .GetParent()
             .GetNode<Panel>("TooltipPanel")
@@ -35,6 +37,7 @@ public partial class HoverButton : TextureButton
         TooltipLabelDescription = GetMeta("LabelDescription").ToString();
 
         _tooltipPanel = GetParent()
+            .GetParent()
             .GetParent()
             .GetParent()
             .GetNode<Panel>("TooltipPanel");

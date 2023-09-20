@@ -10,8 +10,8 @@ public partial class TargetInfoUI : PanelContainer
 	public override void _Ready()
 	{
 		_container = GetNode<PanelContainer>(this.GetPath());
-        _nameLabel = GetChild(0).GetNode<Label>("TargetName");
-        _healthLabel = GetChild(0).GetNode<Label>("Health");
+        _nameLabel = GetNode<VBoxContainer>("VBoxContainer").GetNode<Label>("TargetName");
+        _healthLabel = GetNode<VBoxContainer>("VBoxContainer").GetNode<Label>("Health");
 
         HideTargetUI();
 	}

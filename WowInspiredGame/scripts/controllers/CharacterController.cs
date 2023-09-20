@@ -5,7 +5,7 @@ using WowInspiredGame.scripts.helpers;
 public partial class CharacterController : CharacterBody3D
 {
     [Export]
-    public const float Speed = 5.0f;
+    public const float Speed = 8.0f;
     [Export]
     public const float JumpVelocity = 6f;
     [Export]

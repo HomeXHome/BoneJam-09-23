@@ -7,7 +7,7 @@ public partial class InventoryUIPanel : PanelContainer
 	private GridContainer _gridContainer;
     public override void _Ready()
 	{
-        _gridContainer = GetNode<GridContainer>("GridContainer");
+        _gridContainer = GetNode<MarginContainer>("MarginContainer").GetNode<GridContainer>("GridContainer");
     }
 
 	public override void _Process(double delta)

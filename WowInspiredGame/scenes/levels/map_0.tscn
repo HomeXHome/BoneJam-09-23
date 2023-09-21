@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://b42jdj45dneou"]
+[gd_scene load_steps=46 format=3 uid="uid://b42jdj45dneou"]
 
 [ext_resource type="PackedScene" uid="uid://0olysno83k7d" path="res://scenes/levels/map_imports/map_3.tscn" id="2_ifra2"]
 [ext_resource type="Script" path="res://scripts/controllers/ClickableObjectController.cs" id="2_l86fw"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scripts/controllers/AttackController.cs" id="8_o01ge"]
 [ext_resource type="Script" path="res://scripts/controllers/InventoryController.cs" id="9_4ao3u"]
 [ext_resource type="Script" path="res://scripts/controllers/CameraController.cs" id="10_3ugt0"]
+[ext_resource type="Script" path="res://scripts/controllers/RenderDistanceController.cs" id="10_qufdg"]
 [ext_resource type="Script" path="res://scripts/ui/TargetInfoUI.cs" id="11_sxaun"]
 [ext_resource type="Texture2D" uid="uid://rcbr66lfwrhg" path="res://textures/ui_textures/targetpanel.png" id="12_1im1k"]
 [ext_resource type="Script" path="res://scripts/ui/InventoryUIPanel.cs" id="12_hhogu"]
@@ -24,6 +25,9 @@
 [ext_resource type="Shader" path="res://shaders/minimap.gdshader" id="19_wp1mv"]
 [ext_resource type="Texture2D" uid="uid://byspf7m2xajq7" path="res://textures/ui_textures/minimapmask.png" id="20_ov4lj"]
 [ext_resource type="Texture2D" uid="uid://bb5eulfsfw0a5" path="res://textures/ui_textures/minimappanel.png" id="21_3fm8a"]
+[ext_resource type="PackedScene" uid="uid://ceahunb8uktrj" path="res://scenes/environment/tree_0.tscn" id="25_prd4n"]
+[ext_resource type="PackedScene" uid="uid://c0tsb7xgtfo64" path="res://scenes/environment/tree_1.tscn" id="26_hfar3"]
+[ext_resource type="PackedScene" uid="uid://d0chpkxsj1bsy" path="res://scenes/environment/tree_2.tscn" id="27_5puf5"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_ibcag"]
 
@@ -42,6 +46,10 @@
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_j5lh2"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_wrpnn"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_u5n14"]
+height = 15.807
+radius = 15.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_egdd0"]
 
@@ -155,13 +163,15 @@ PathToSprite = "res://textures/test_textures/test1.png"
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="Player" groups=["Player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0427856, -0.0386047, 0.0192041)
-collision_layer = 16
-collision_mask = 16
+collision_layer = 24
+collision_mask = 24
 input_ray_pickable = false
 script = ExtResource("6_6jwk7")
+Speed = 12.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player/CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+layers = 9
 mesh = SubResource("CapsuleMesh_d7155")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player/CharacterBody3D/MeshInstance3D"]
@@ -209,6 +219,15 @@ one_shot = true
 [node name="InventoryController" type="Node3D" parent="Player/CharacterBody3D"]
 script = ExtResource("9_4ao3u")
 
+[node name="RenderDistanceController" type="Node3D" parent="Player/CharacterBody3D"]
+
+[node name="Area3D" type="Area3D" parent="Player/CharacterBody3D/RenderDistanceController"]
+collision_layer = 9
+script = ExtResource("10_qufdg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player/CharacterBody3D/RenderDistanceController/Area3D"]
+shape = SubResource("CylinderShape3D_u5n14")
+
 [node name="CameraController" type="Node3D" parent="Player" groups=["CameraController"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 script = ExtResource("10_3ugt0")
@@ -221,6 +240,7 @@ spring_length = 8.0
 
 [node name="Camera3D" type="Camera3D" parent="Player/CameraController/SpringArm3D" groups=["Camera"]]
 transform = Transform3D(1, 0, 0, 0, 0.922619, 0.385713, 0, -0.385713, 0.922619, 0, 2.8, 3.8)
+current = true
 
 [node name="PlayerLook" type="Node3D" parent="Player/CameraController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.34595, 3.32936)
@@ -377,8 +397,10 @@ texture = ExtResource("21_3fm8a")
 
 [node name="Camera3D" type="Camera3D" parent="Player/CameraController/UI/SubViewportContainer/SubViewport"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 168.807, 30, 19.538)
+cull_mask = 1048543
 environment = SubResource("Environment_jml3w")
 projection = 1
+current = true
 size = 50.0
 script = ExtResource("19_8vnpw")
 
@@ -409,6 +431,74 @@ script = ExtResource("16_altn0")
 [node name="Timer" type="Timer" parent="SaveController"]
 wait_time = 10.0
 autostart = true
+
+[node name="forest" type="Node3D" parent="."]
+
+[node name="tree0" parent="forest" instance=ExtResource("25_prd4n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 165.617, -28.4258, 0.357239)
+
+[node name="tree1" parent="forest" instance=ExtResource("25_prd4n")]
+transform = Transform3D(0.275755, 0, -0.961228, 0, 1, 0, 0.961228, 0, 0.275755, 159.437, -28.8083, 21.5854)
+
+[node name="tree2" parent="forest" instance=ExtResource("25_prd4n")]
+transform = Transform3D(-0.510078, 0, -0.860128, 0, 1, 0, 0.860128, 0, -0.510078, 196.222, -28.6027, 121.441)
+
+[node name="tree3" parent="forest" instance=ExtResource("25_prd4n")]
+transform = Transform3D(-0.00127403, 0, -0.999999, 0, 1, 0, 0.999999, 0, -0.00127403, 171.373, -28.4258, 70.9122)
+
+[node name="tree4" parent="forest" instance=ExtResource("25_prd4n")]
+transform = Transform3D(0.106611, 0, -0.994301, 0, 1, 0, 0.994301, 0, 0.106611, 196.017, -28.532, 71.5622)
+
+[node name="tree5" parent="forest" instance=ExtResource("25_prd4n")]
+transform = Transform3D(0.807084, 0, -0.590437, 0, 1, 0, 0.590437, 0, 0.807084, 184.758, -29.2066, 30.9784)
+
+[node name="tree6" parent="forest" instance=ExtResource("25_prd4n")]
+transform = Transform3D(0.489732, 0, 0.871873, 0, 1, 0, -0.871873, 0, 0.489732, 171.243, -29.124, 32.5473)
+
+[node name="tree7" parent="forest" instance=ExtResource("25_prd4n")]
+transform = Transform3D(0.281722, 0, -0.959496, 0, 1, 0, 0.959496, 0, 0.281722, 207.475, -28.9747, 30.1798)
+
+[node name="tree8" parent="forest" instance=ExtResource("25_prd4n")]
+transform = Transform3D(0.668495, 0, 0.743717, 0, 1, 0, -0.743717, 0, 0.668495, 201.295, -28.7379, 51.408)
+
+[node name="tree9" parent="forest" instance=ExtResource("25_prd4n")]
+transform = Transform3D(-0.490189, 0, -0.871616, 0, 1, 0, 0.871616, 0, -0.490189, 238.08, -26.8446, 151.264)
+
+[node name="tree10" parent="forest" instance=ExtResource("25_prd4n")]
+transform = Transform3D(0.765068, 0, 0.64395, 0, 1, 0, -0.64395, 0, 0.765068, 213.231, -28.7714, 100.735)
+
+[node name="tree11" parent="forest" instance=ExtResource("25_prd4n")]
+transform = Transform3D(0.651516, 0, 0.758635, 0, 1, 0, -0.758635, 0, 0.651516, 237.876, -28.5218, 101.385)
+
+[node name="tree12" parent="forest" instance=ExtResource("25_prd4n")]
+transform = Transform3D(0.145824, 0, 0.989311, 0, 1, 0, -0.989311, 0, 0.145824, 226.616, -28.4799, 60.801)
+
+[node name="tree13" parent="forest" instance=ExtResource("25_prd4n")]
+transform = Transform3D(0.383151, 0, -0.923686, 0, 1, 0, 0.923686, 0, 0.383151, 213.101, -28.5226, 62.3699)
+
+[node name="tree14" parent="forest" instance=ExtResource("26_hfar3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 156.433, -28.6652, 35.4727)
+
+[node name="tree15" parent="forest" instance=ExtResource("26_hfar3")]
+transform = Transform3D(-0.190843, 0, -0.98162, 0, 1, 0, 0.98162, 0, -0.190843, 202.929, -28.6652, 17.0816)
+
+[node name="tree16" parent="forest" instance=ExtResource("26_hfar3")]
+transform = Transform3D(-0.989564, 0, -0.144097, 0, 1, 0, 0.144097, 0, -0.989564, 183.686, -28.6652, 88.9841)
+
+[node name="tree17" parent="forest" instance=ExtResource("27_5puf5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 179.651, -28.6426, 57.8196)
+
+[node name="tree18" parent="forest" instance=ExtResource("27_5puf5")]
+transform = Transform3D(0.296342, 0, -0.955082, 0, 1, 0, 0.955082, 0, 0.296342, 224.943, -28.6426, 82.074)
+
+[node name="tree19" parent="forest" instance=ExtResource("27_5puf5")]
+transform = Transform3D(0.296342, 0, -0.955082, 0, 1, 0, 0.955082, 0, 0.296342, 196.974, -28.6426, 103.424)
+
+[node name="tree20" parent="forest" instance=ExtResource("27_5puf5")]
+transform = Transform3D(0.296342, 0, -0.955082, 0, 1, 0, 0.955082, 0, 0.296342, 212.217, -28.6426, 46.7262)
+
+[node name="tree21" parent="forest" instance=ExtResource("27_5puf5")]
+transform = Transform3D(0.296342, 0, -0.955082, 0, 1, 0, 0.955082, 0, 0.296342, 190.812, -28.6426, 41.4538)
 
 [connection signal="body_entered" from="Player/CharacterBody3D/PerceptionController/CloseArea" to="Player/CharacterBody3D/TargetController" method="AddEntityToCloseList" flags=18]
 [connection signal="body_exited" from="Player/CharacterBody3D/PerceptionController/CloseArea" to="Player/CharacterBody3D/TargetController" method="RemoveEntityFromCloseList" flags=18]

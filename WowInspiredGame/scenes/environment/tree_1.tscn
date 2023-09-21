@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0tsb7xgtfo64"]
+
+[ext_resource type="PackedScene" uid="uid://b4f1xs0wd4lf2" path="res://import/prop_import/tree1.glb" id="1_0a6v0"]
+
+[node name="tree1" groups=["Renderable"] instance=ExtResource("1_0a6v0")]
+
+[node name="StaticBody3D" parent="tree_01" index="0"]
+collision_layer = 9
+collision_mask = 9

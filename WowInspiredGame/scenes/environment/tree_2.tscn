@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://d0chpkxsj1bsy"]
+
+[ext_resource type="PackedScene" uid="uid://di51rx4dabtgn" path="res://import/prop_import/tree2.glb" id="1_cga40"]
+
+[node name="tree2" groups=["Renderable"] instance=ExtResource("1_cga40")]
+
+[node name="StaticBody3D" parent="tree_03" index="0"]
+collision_layer = 9

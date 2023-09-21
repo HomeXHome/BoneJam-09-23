@@ -35,6 +35,10 @@ public partial class LoadController : Node
     public void LoadGame() {
         if (CheckIfSaveExists(combinePath)) {
             DeserializeSaveFile();
+        }else {
+            Node3D startNode = (Node3D)GetTree().GetFirstNodeInGroup("SpawnPoint");
+            Vector3 startPos = startNode.GlobalPosition;
+            EmitSignal(nameof(LoadGamePosition), startPos);
         };
     }
 

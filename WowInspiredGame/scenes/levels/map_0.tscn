@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://b42jdj45dneou"]
+[gd_scene load_steps=41 format=3 uid="uid://b42jdj45dneou"]
 
 [ext_resource type="PackedScene" uid="uid://0olysno83k7d" path="res://scenes/levels/map_imports/map_3.tscn" id="2_ifra2"]
 [ext_resource type="Script" path="res://scripts/controllers/ClickableObjectController.cs" id="2_l86fw"]
@@ -21,6 +21,11 @@
 [ext_resource type="Texture2D" uid="uid://8pn454c00iv5" path="res://textures/ui_textures/skillpanel.png" id="16_e76qt"]
 [ext_resource type="Texture2D" uid="uid://bddv0otgvyqi0" path="res://textures/ui_textures/tooltippanel.png" id="16_ohxic"]
 [ext_resource type="Script" path="res://scripts/controllers/MinimapController.cs" id="19_8vnpw"]
+[ext_resource type="Shader" path="res://shaders/minimap.gdshader" id="19_wp1mv"]
+[ext_resource type="Texture2D" uid="uid://byspf7m2xajq7" path="res://textures/ui_textures/minimapmask.png" id="20_ov4lj"]
+[ext_resource type="Texture2D" uid="uid://bb5eulfsfw0a5" path="res://textures/ui_textures/minimappanel.png" id="21_3fm8a"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ibcag"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_m6dk0"]
 
@@ -45,6 +50,10 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pnf5g"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_px3jl"]
+shader = ExtResource("19_wp1mv")
+shader_parameter/mask = ExtResource("20_ov4lj")
+
 [sub_resource type="Environment" id="Environment_jml3w"]
 background_mode = 1
 background_color = Color(0.878431, 0.678431, 0.439216, 1)
@@ -62,10 +71,16 @@ reflected_light_source = 1
 environment = ExtResource("2_shrqg")
 
 [node name="map3" parent="." instance=ExtResource("2_ifra2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19, 17, 67)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1541.54, 188.144, 543.369)
+
+[node name="SpawnPoint" type="Node3D" parent="." groups=["SpawnPoint"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 167.308, -24.6659, 13.7999)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SpawnPoint"]
+mesh = SubResource("SphereMesh_ibcag")
 
 [node name="Pickable" type="StaticBody3D" parent="." groups=["Interactable", "Pickable"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7953, -13.84, 3.72839)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 137.12, -26.0281, 0.992428)
 collision_layer = 7
 script = ExtResource("2_l86fw")
 ObjectName = "Pickable Orb"
@@ -89,7 +104,7 @@ Description = "This is a test orb"
 PathToSprite = "res://textures/test_textures/test0.png"
 
 [node name="Pickable2" type="StaticBody3D" parent="." groups=["Interactable", "Pickable"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7953, -13.84, 10.2057)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 133.089, -25.7231, 24.0614)
 collision_layer = 7
 script = ExtResource("2_l86fw")
 ObjectName = "Pickable Orb"
@@ -113,7 +128,7 @@ Description = "This is a test pickable"
 PathToSprite = "res://textures/test_textures/test0.png"
 
 [node name="Pickable3" type="StaticBody3D" parent="." groups=["Interactable", "Pickable"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.1111, -13.84, 0.448909)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 124.25, -24.5953, 14.3046)
 collision_layer = 7
 script = ExtResource("2_l86fw")
 ObjectName = "Pickable Orb11"
@@ -137,10 +152,9 @@ Description = "This is a test orb"
 PathToSprite = "res://textures/test_textures/test1.png"
 
 [node name="Player" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0259609, 0.974423, 0.00275305)
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="Player" groups=["Player"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0427852, -0.0386047, 0.0192041)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0427856, -0.0386047, 0.0192041)
 collision_layer = 16
 collision_mask = 16
 input_ray_pickable = false
@@ -339,6 +353,7 @@ offset_bottom = 40.0
 texture = ExtResource("16_e76qt")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="Player/CameraController/UI"]
+material = SubResource("ShaderMaterial_px3jl")
 custom_minimum_size = Vector2(200, 200)
 anchors_preset = 1
 anchor_left = 1.0
@@ -351,17 +366,24 @@ grow_horizontal = 0
 
 [node name="SubViewport" type="SubViewport" parent="Player/CameraController/UI/SubViewportContainer"]
 transparent_bg = true
+handle_input_locally = false
 size = Vector2i(200, 200)
+render_target_update_mode = 4
+
+[node name="TextureRect" type="TextureRect" parent="Player/CameraController/UI/SubViewportContainer/SubViewport"]
+offset_right = 200.0
+offset_bottom = 200.0
+texture = ExtResource("21_3fm8a")
 
 [node name="Camera3D" type="Camera3D" parent="Player/CameraController/UI/SubViewportContainer/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 30, 0)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 168.807, 30, 19.538)
 environment = SubResource("Environment_jml3w")
 projection = 1
 size = 50.0
 script = ExtResource("19_8vnpw")
 
 [node name="Enemy4" type="StaticBody3D" parent="." groups=["Interactable"]]
-transform = Transform3D(-1.97427, 0.207669, -0.243149, 0, 1.52081, 1.2989, 0.319762, 1.28219, -1.50125, 0.603411, 0.528748, -14.5422)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 117.97, -27.155, -9.89473)
 collision_layer = 7
 script = ExtResource("2_l86fw")
 ObjectName = "Fly Box"

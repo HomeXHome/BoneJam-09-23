@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://6kvkgefh3j24"]
+
+[ext_resource type="Script" path="res://scripts/ui/EnterGameLoadScript.cs" id="1_0m147"]
+[ext_resource type="Texture2D" uid="uid://ceya3c0y1b2a6" path="res://textures/test_textures/test0.png" id="1_14ipc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c1nc3"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="MainLoadScene" type="Node3D"]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="UI"]
+offset_left = 422.0
+offset_top = 736.0
+offset_right = 898.0
+offset_bottom = 912.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_c1nc3")
+
+[node name="EnterGameButton" type="TextureButton" parent="UI/Panel"]
+layout_mode = 0
+offset_left = 174.0
+offset_top = 72.0
+offset_right = 322.0
+offset_bottom = 164.0
+texture_normal = ExtResource("1_14ipc")
+stretch_mode = 0
+script = ExtResource("1_0m147")

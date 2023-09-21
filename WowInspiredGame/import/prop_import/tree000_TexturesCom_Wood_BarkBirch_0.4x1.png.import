@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://kguf21fnkmfj"
-path.s3tc="res://.godot/imported/tree2_photo-1582231675377-b17f783ce211.png-664ae8a1638505d2a1da65741648c600.s3tc.ctex"
+uid="uid://dq3cahbs80sak"
+path.s3tc="res://.godot/imported/tree000_TexturesCom_Wood_BarkBirch_0.4x1.png-ce0b586e2171ab98ea43ebf91cbfca71.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ generator_parameters={}
 
 [deps]
 
-source_file="res://import/prop_import/tree2_photo-1582231675377-b17f783ce211.png"
-dest_files=["res://.godot/imported/tree2_photo-1582231675377-b17f783ce211.png-664ae8a1638505d2a1da65741648c600.s3tc.ctex"]
+source_file="res://import/prop_import/tree000_TexturesCom_Wood_BarkBirch_0.4x1.png"
+dest_files=["res://.godot/imported/tree000_TexturesCom_Wood_BarkBirch_0.4x1.png-ce0b586e2171ab98ea43ebf91cbfca71.s3tc.ctex"]
 
 [params]
 

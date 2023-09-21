@@ -8,7 +8,6 @@ public partial class RenderDistanceController : Area3D
     public override void _Ready() {
         Connect("body_entered",Callable.From<Node3D>(OnRenderDistanceEntered));
         Connect("body_exited", Callable.From<Node3D>(OnRenderDistanceLeft));
-        EnableAllVisibleNodes();
     }
 
     public override void _Process(double delta) {
@@ -30,9 +29,11 @@ public partial class RenderDistanceController : Area3D
 
     public void EnableAllVisibleNodes() {
         var node = (Area3D)this;
-        var list = node.GetOverlappingBodies();
         foreach (Node3D targetNode in node.GetOverlappingBodies()) {
-            GD.Print(targetNode.Name);
+            if (targetNode.IsInGroup("Renderable")) {
+                GD.Print(targetNode.GetParent().GetParent<Node3D>());
+                targetNode.GetParent().GetParent<Node3D>().Visible = true;
+            }
         }
     }
 }

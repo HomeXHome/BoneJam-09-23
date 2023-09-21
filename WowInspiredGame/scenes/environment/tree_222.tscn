@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://wj5n6x4e61qm"]
+
+[ext_resource type="PackedScene" uid="uid://w4c8dc2s6tfa" path="res://import/prop_import/tree222.glb" id="1_8o7bo"]
+[ext_resource type="Script" path="res://scripts/controllers/HideFarAwayItems.cs" id="2_oa40l"]
+
+[node name="tree222" groups=["Renderable"] instance=ExtResource("1_8o7bo")]
+script = ExtResource("2_oa40l")
+
+[node name="StaticBody3D" parent="tree" index="0" groups=["Renderable"]]
+collision_layer = 9

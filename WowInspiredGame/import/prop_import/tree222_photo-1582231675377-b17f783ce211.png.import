@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bi566bvpbltth"
-path.s3tc="res://.godot/imported/tree0_treecrown.png-4a9ebedea78f431f6e27df553230bd43.s3tc.ctex"
+uid="uid://bygm7nwdlgrhk"
+path.s3tc="res://.godot/imported/tree222_photo-1582231675377-b17f783ce211.png-93d16a0a3bae29f09690fa710ea0f7d0.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ generator_parameters={}
 
 [deps]
 
-source_file="res://import/prop_import/tree0_treecrown.png"
-dest_files=["res://.godot/imported/tree0_treecrown.png-4a9ebedea78f431f6e27df553230bd43.s3tc.ctex"]
+source_file="res://import/prop_import/tree222_photo-1582231675377-b17f783ce211.png"
+dest_files=["res://.godot/imported/tree222_photo-1582231675377-b17f783ce211.png-93d16a0a3bae29f09690fa710ea0f7d0.s3tc.ctex"]
 
 [params]
 

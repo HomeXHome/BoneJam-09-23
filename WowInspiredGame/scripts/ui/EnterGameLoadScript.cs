@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class EnterGameLoadScript : TextureButton
+public partial class EnterGameLoadScript : Button
 {
 
     public override void _Ready() {

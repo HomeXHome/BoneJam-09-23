@@ -23,6 +23,8 @@ public partial class TargetController : Node3D
     public delegate void ReturnTargetHealthEventHandler(int[] health);
     [Signal]
     public delegate void PickableInventoryTagEventHandler(string name, string desc, string path);
+    [Signal]
+    public delegate void AttackIncomingEventHandler();
 
     private Node3D _playerTarget = null;
     private AttackController _attackController;
@@ -114,6 +116,7 @@ public partial class TargetController : Node3D
         if (_attackController.ReturnReady() && CheckIfObjectIsClose(_playerTarget)) {
             _attackController.HandleAttacking();
             _healthController.ChangeHealth(_currentAttackPower);
+            EmitSignal(nameof(AttackIncoming));
             EmitSignal(nameof(ClickedTargetHealth), _currentAttackPower);
             EmitSignal(nameof(ReturnTargetHealth), _healthController.ReturnAllHealth());
         }

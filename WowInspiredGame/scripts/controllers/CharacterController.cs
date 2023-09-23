@@ -11,7 +11,7 @@ public partial class CharacterController : CharacterBody3D
     [Export]
     public float TurnSpeed = 0.1f;
 
-    private float stoppingDistance = 2.5f;
+    private float stoppingDistance = 4f;
     private Node3D _playerLook;
     private bool _isAutorunEnabled = false;
 
@@ -20,13 +20,15 @@ public partial class CharacterController : CharacterBody3D
 
     public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
+    public AnimationController _animationController;
+
     //public delegate void PositionChanged(Vector3 position);
     //public event PositionChanged OnPositionChanged;
 
     public override void _Ready() {
 
         _playerLook = GetNode<Node3D>("../CameraController/PlayerLook/LookTarget");
-
+        _animationController = GetNode<AnimationController>("AnimationController");
     }
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -69,12 +71,13 @@ public partial class CharacterController : CharacterBody3D
             Vector3 targetVector = (_targetPosition - GlobalPosition).Normalized();
             velocity.X = targetVector.X * Speed;
             velocity.Z = targetVector.Z * Speed;
-
             //Stopping before reaching target
             float distanceToTarget = (_targetPosition - GlobalPosition).Length();
+            _animationController.UpdateWalkAnimation(new Vector2(0,-1));
             if (distanceToTarget < stoppingDistance) {
                 velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
                 velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
+                _animationController.UpdateWalkAnimation(new Vector2(0, 0));
             }
         }
 

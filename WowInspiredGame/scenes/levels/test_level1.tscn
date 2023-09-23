@@ -61,11 +61,10 @@ skeleton = NodePath("../CollisionShape3D")
 script = ExtResource("4_n7boi")
 Health = 1
 
-[node name="Tag" type="Node3D" parent="Pickable" node_paths=PackedStringArray("Sprite")]
+[node name="Tag" type="Node3D" parent="Pickable"]
 script = ExtResource("5_jocyk")
 ItemName = "Pickable Orb"
 Description = "This is a test orb"
-Sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="Pickable/Tag"]
 position = Vector2(-1202, 72)

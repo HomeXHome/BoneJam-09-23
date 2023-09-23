@@ -31,7 +31,6 @@ public partial class RenderDistanceController : Area3D
         var node = (Area3D)this;
         foreach (Node3D targetNode in node.GetOverlappingBodies()) {
             if (targetNode.IsInGroup("Renderable")) {
-                GD.Print(targetNode.GetParent().GetParent<Node3D>());
                 targetNode.GetParent().GetParent<Node3D>().Visible = true;
             }
         }
